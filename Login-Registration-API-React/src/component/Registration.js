@@ -2,18 +2,22 @@ import React, { Component } from 'react'
 
 // import { Link } from 'react-router-dom'
 import axios from "axios";
-import './LoginReg.css'
+import './Form.css'
+import { Link } from 'react-router-dom';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 class Registration extends Component {
     state = {
         registration: {
             name: '',
             email: '',
-            password: ''
+            password: '',
         }
     }
 
     changeHandler = (event) => {
+        // event.preventDefault();
         this.setState({
             ...this.state,
             registration: {
@@ -25,28 +29,47 @@ class Registration extends Component {
 
     submitHandler = (event) => {
         event.preventDefault();
+        // debugger
         axios.post("http://localhost:3000/api/", this.state.registration)
             .then((response) => {
-                console.log(response);
-                debugger
-                this.setState({
-                    ...this.state,
-                    registration: {
-                        name: '',
-                        email: '',
-                        password: '',
-                    },
-                })
-                console.log(response);
+                // toast.error(response.data, {
+                //     position: toast.POSITION.TOP_LEFT
+                // });
+                // debugger
+                if (response.data === 'Email is Already Exist') {
+                    toast.error(response.data, {
+                        position: toast.POSITION.TOP_CENTER
+                    });
+                } else {
+                    // debugger
+                    this.setState({
+                        ...this.state,
+                        registration: {
+                            name: '',
+                            email: '',
+                            password: '',
+                        },
+                    })
+                    this.props.history.push(`/`);
+                }
             })
             .catch((error) => {
-                console.log(error);
+                toast.error(error);
             })
+    }
+    notify = () => {
+        toast("Success Notification !", {
+            position: toast.POSITION.TOP_CENTER
+        });
     }
     render() {
 
         return (
+
             <div className="container" >
+                <button onClick={this.notify}>Notify !</button>
+                <ToastContainer />
+
                 <div className="row">
                     <div className='col-md-3'></div>
                     <div className='col-md-6'>
@@ -58,25 +81,27 @@ class Registration extends Component {
                                     <label className="form-label" >Name: </label>
                                     <input
                                         className="rounded-pill form-control"
-                                        type="text"
                                         onChange={this.changeHandler}
                                         value={this.state.registration.name}
                                         name="name"
                                         placeholder="Enter Username"
+
                                     />
                                 </div>
+
 
                                 <div className="form-group ">
                                     <label className="form-label" >Email: </label>
                                     <input
                                         className="rounded-pill form-control"
-                                        type="email"
                                         onChange={this.changeHandler}
                                         value={this.state.registration.email}
                                         name="email"
                                         placeholder="Enter Email"
+
                                     />
                                 </div>
+
 
                                 <div className="form-group ">
                                     <label className="form-label" >Password: </label>
@@ -87,13 +112,14 @@ class Registration extends Component {
                                         value={this.state.registration.password}
                                         name="password"
                                         placeholder="Enter Password"
+
                                     />
                                 </div>
 
                                 <div className="form-group text-center">
                                     <label className="form-label"></label>
-                                    <button type="submit" className="btn btn-primary rounded-pill">Save</button>
-                                    <button className="btn  rounded-pill">Cancle</button>
+                                    <button type="submit" className="btn  rounded-pill">Save</button>
+                                    <button className="btn  rounded-pill"><Link to="/">Cancle</Link></button>
                                 </div>
                             </form>
                         </div>

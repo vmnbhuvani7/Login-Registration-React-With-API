@@ -1,9 +1,11 @@
 import React, { Component } from 'react'
 
 // import { Link } from 'react-router-dom'
-import './LoginReg.css'
+import './Form.css'
 import axios from "axios";
-import Registration from './Registration';
+import Home from './Home';
+import { Link } from 'react-router-dom';
+// import Registration from './Registration';
 
 
 class Login extends Component {
@@ -26,20 +28,19 @@ class Login extends Component {
     }
 
     submitHandler = (event) => {
-        event.preventDefault();
+        // event.preventDefault();
         axios.post("http://localhost:3000/api/login", this.state.login)
             .then((response) => {
-                console.log(response.data);
+                // debugger
                 localStorage.setItem('token', response.data)
-                let abc = localStorage.getItem('token')
-                // console.log(abc === response.data);
-                if (abc === response.data) {
+                if (response.data) {
                     this.setState({
                         ...this.state,
                         isLogin: true
                     })
                 }
-                console.log(response);
+                // debugger
+                // this.props.history.push('/home');
             })
             .catch((error) => {
                 console.log(error);
@@ -66,6 +67,7 @@ class Login extends Component {
                                                 value={this.state.login.email}
                                                 name="email"
                                                 placeholder="Enter Email"
+                                                required
                                             />
                                         </div>
                                         <div className="form-group  input-box">
@@ -76,19 +78,20 @@ class Login extends Component {
                                                     onChange={this.changeHandler}
                                                     value={this.state.login.password}
                                                     placeholder="Enter Password"
-                                                    name="password" />
+                                                    name="password"
+                                                    required
+                                                />
                                             </div>
                                         </div>
-                                        <div className="form-group text-center">
+                                        {/* <div className="form-group text-center">
                                             <input type="checkbox" className="form-check-input" id="exampleCheck1" />
                                             <input type="checkbox" onChange={this.changeHandler} /> Remember me
-                                     </div>
+                                     </div> */}
                                         <div className="form-group text-center">
                                             <button type="submit" className="btn btn-primary rounded-pill">Submit</button>
-                                            <button className="btn rounded-pill"> login</button>
+                                            <button className="btn rounded-pill"><Link to="/registration"> Registration</Link></button>
                                         </div>
                                         <div className="form-group text-center">
-
                                             <a href="#">Forgot password? </a>
                                         </div>
                                     </form>
@@ -99,7 +102,7 @@ class Login extends Component {
                         </div>
                     </div>
                 )}
-                {this.state.isLogin && (<Registration />)}
+                {/* {this.state.isLogin && (<Home />)} */}
             </div>
         )
     }

@@ -41,14 +41,14 @@ routes.post('/', async (req, res) => {
     console.log('working');
     // const {errors} = joi.validate(req.body, schema);
 
-    const {error} = userValidation(req.body);
-    if(error) return res.status(400).send(error.details[0].message);
+    const { error } = userValidation(req.body);
+    if (error) return res.status(400).send(error.details[0].message);
 
     // check email is exist or not
 
-    const emailExist = await userModel.findOne({email: req.body.email});
+    const emailExist = await userModel.findOne({ email: req.body.email });
 
-    if(emailExist) {return res.send('Email is Exist')};
+    if (emailExist) { return res.send('Email is Already Exist') };
 
 
     // Hash Password
@@ -56,7 +56,7 @@ routes.post('/', async (req, res) => {
     const hashedpassword = await bcrypt.hash(req.body.password, salt);
 
 
-    let userInsert = new  userModel({
+    let userInsert = new userModel({
         name: req.body.name,
         email: req.body.email,
         password: hashedpassword
@@ -73,19 +73,19 @@ routes.post('/', async (req, res) => {
 
 
 
-routes.post('/login', async (req, res)=>{
+routes.post('/login', async (req, res) => {
 
-    const {error} = loginValidation(req.body);
-    if(error) return res.status(400).send(error.details[0].message);
+    const { error } = loginValidation(req.body);
+    if (error) return res.status(400).send(error.details[0].message);
 
-    const findUser = await userModel.findOne( {email : req.body.email} );
+    const findUser = await userModel.findOne({ email: req.body.email });
 
-    if(!findUser){
-       return res.status(400).send('Email Not Found');
+    if (!findUser) {
+        return res.status(400).send('Email Not Found');
     }
 
     const validPassword = await bcrypt.compare(req.body.password, findUser.password)
-    if(!validPassword) {
+    if (!validPassword) {
         return res.status(400).send('Password Is Wrong');
     }
 
