@@ -1,13 +1,13 @@
 import React, { Component } from 'react'
 
-// import { Link } from 'react-router-dom'
 import axios from "axios";
 import './Form.css'
 import { Link } from 'react-router-dom';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
-class Registration extends Component {
+class RegistrationClass extends Component {
+
     state = {
         registration: {
             name: '',
@@ -17,7 +17,7 @@ class Registration extends Component {
     }
 
     changeHandler = (event) => {
-        // event.preventDefault();
+        event.preventDefault();
         this.setState({
             ...this.state,
             registration: {
@@ -29,19 +29,16 @@ class Registration extends Component {
 
     submitHandler = (event) => {
         event.preventDefault();
-        // debugger
         axios.post("http://localhost:3000/api/", this.state.registration)
             .then((response) => {
-                // toast.error(response.data, {
-                //     position: toast.POSITION.TOP_LEFT
-                // });
-                // debugger
+                toast.error(response.data, {
+                    position: toast.POSITION.TOP_LEFT
+                });
                 if (response.data === 'Email is Already Exist') {
                     toast.error(response.data, {
                         position: toast.POSITION.TOP_CENTER
                     });
                 } else {
-                    // debugger
                     this.setState({
                         ...this.state,
                         registration: {
@@ -57,19 +54,11 @@ class Registration extends Component {
                 toast.error(error);
             })
     }
-    notify = () => {
-        toast("Success Notification !", {
-            position: toast.POSITION.TOP_CENTER
-        });
-    }
+
     render() {
-
         return (
-
             <div className="container" >
-                <button onClick={this.notify}>Notify !</button>
                 <ToastContainer />
-
                 <div className="row">
                     <div className='col-md-3'></div>
                     <div className='col-md-6'>
@@ -85,10 +74,8 @@ class Registration extends Component {
                                         value={this.state.registration.name}
                                         name="name"
                                         placeholder="Enter Username"
-
                                     />
                                 </div>
-
 
                                 <div className="form-group ">
                                     <label className="form-label" >Email: </label>
@@ -98,10 +85,8 @@ class Registration extends Component {
                                         value={this.state.registration.email}
                                         name="email"
                                         placeholder="Enter Email"
-
                                     />
                                 </div>
-
 
                                 <div className="form-group ">
                                     <label className="form-label" >Password: </label>
@@ -112,7 +97,6 @@ class Registration extends Component {
                                         value={this.state.registration.password}
                                         name="password"
                                         placeholder="Enter Password"
-
                                     />
                                 </div>
 
@@ -132,4 +116,4 @@ class Registration extends Component {
 }
 
 
-export default Registration
+export default RegistrationClass

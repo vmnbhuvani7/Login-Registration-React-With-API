@@ -1,10 +1,8 @@
 import React, { Component } from 'react';
-import './App.css';
 
+import './App.css';
 import { BrowserRouter } from 'react-router-dom';
 import MainRouter from './MainRouter';
-import { ToastContainer, toast } from 'react-toastify';
-
 
 export class App extends Component {
 
@@ -13,8 +11,6 @@ export class App extends Component {
     return (
       <BrowserRouter>
         <MainRouter />
-        {/* <LoginForm /> */}
-        {/* <RegistrationForm addRegistrationData={this.addRegistrationData} /> */}
       </BrowserRouter>
     );
   }

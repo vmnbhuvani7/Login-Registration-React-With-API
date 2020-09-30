@@ -3,7 +3,7 @@ import React, { Component } from 'react'
 import { Link } from 'react-router-dom'
 import './Form.css'
 
-export class LoginFormNew extends Component {
+export class LoginForm extends Component {
     state = {
         username: '',
         password: ''
@@ -68,4 +68,4 @@ export class LoginFormNew extends Component {
 }
 
 
-export default LoginFormNew
+export default LoginForm

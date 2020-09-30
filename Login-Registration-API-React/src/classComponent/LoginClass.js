@@ -1,14 +1,10 @@
 import React, { Component } from 'react'
 
-// import { Link } from 'react-router-dom'
 import './Form.css'
 import axios from "axios";
-import Home from './Home';
 import { Link } from 'react-router-dom';
-// import Registration from './Registration';
 
-
-class Login extends Component {
+class LoginClass extends Component {
     state = {
         login: {
             email: '',
@@ -28,10 +24,9 @@ class Login extends Component {
     }
 
     submitHandler = (event) => {
-        // event.preventDefault();
+        event.preventDefault();
         axios.post("http://localhost:3000/api/login", this.state.login)
             .then((response) => {
-                // debugger
                 localStorage.setItem('token', response.data)
                 if (response.data) {
                     this.setState({
@@ -39,8 +34,7 @@ class Login extends Component {
                         isLogin: true
                     })
                 }
-                // debugger
-                // this.props.history.push('/home');
+                this.props.history.push('/home');
             })
             .catch((error) => {
                 console.log(error);
@@ -61,7 +55,6 @@ class Login extends Component {
                                         <div className="form-group  input-box">
                                             <label >Email : </label>
                                             <input
-
                                                 type="email"
                                                 onChange={this.changeHandler}
                                                 value={this.state.login.email}
@@ -83,10 +76,10 @@ class Login extends Component {
                                                 />
                                             </div>
                                         </div>
-                                        {/* <div className="form-group text-center">
+                                        <div className="form-group text-center">
                                             <input type="checkbox" className="form-check-input" id="exampleCheck1" />
                                             <input type="checkbox" onChange={this.changeHandler} /> Remember me
-                                     </div> */}
+                                     </div>
                                         <div className="form-group text-center">
                                             <button type="submit" className="btn btn-primary rounded-pill">Submit</button>
                                             <button className="btn rounded-pill"><Link to="/registration"> Registration</Link></button>
@@ -102,10 +95,9 @@ class Login extends Component {
                         </div>
                     </div>
                 )}
-                {/* {this.state.isLogin && (<Home />)} */}
             </div>
         )
     }
 }
 
-export default Login
+export default LoginClass
