@@ -1,9 +1,10 @@
 import React from 'react'
 import { Button, Nav, Navbar } from 'react-bootstrap'
-import { Link, useHistory } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 
 function Header() {
     const history = useHistory();
+
     const clickLogout = () => {
         localStorage.clear();
         history.push({

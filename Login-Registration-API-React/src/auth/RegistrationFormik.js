@@ -1,6 +1,6 @@
 import React from 'react'
 
-import { Link, useHistory } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 import { ToastContainer, toast } from 'react-toastify';
 import axios from "axios";
 import './Form.css'
@@ -9,21 +9,32 @@ import Home from '../page/Home';
 import { useFormik } from 'formik';
 
 
-
 const RegistrationFormik = () => {
 
     const history = useHistory();
-    
+
 
     const initialValues = {
         name: '',
         email: '',
         password: '',
+        confirmPassword: '',
+        gender: '',
+        hobbies1: '',
+        hobbies2: '',
+        hobbies3: '',
+        city: '',
     }
 
     const onSubmit = (values) => {
         console.log('submit', values);
-        axios.post("http://localhost:3000/api/", values)
+        let data = {
+            name: values.name,
+            email: values.email,
+            password: values.password
+        }
+
+        axios.post("http://localhost:3000/api/", data)
             .then((response) => {
                 if (response.data === 'Email is Already Exist') {
                     toast.error(response.data, {
@@ -53,15 +64,35 @@ const RegistrationFormik = () => {
         if (!values.password) {
             errors.password = 'Password is Required'
         }
-
+        if (!values.confirmPassword) {
+            errors.confirmPassword = 'conform Password is Required'
+        } else if (values.confirmPassword !== values.password) {
+            errors.confirmPassword = 'does not match password'
+        }
+        if (!values.gender) {
+            errors.gender = 'gender is Required'
+        }
+        if (!values.hobbies1 && !values.hobbies2 && !values.hobbies3) {
+            errors.hobbies = 'hobbies is Required'
+        }
+        if (!values.city) {
+            errors.city = 'city is Required'
+        }
         return errors
     }
+
 
     const formik = useFormik({
         initialValues,
         onSubmit,
         validate,
     })
+
+    const cancleHandler = () => {
+        history.push({
+            pathname: "/",
+        })
+    }
 
     const obj = localStorage.getItem('token')
 
@@ -109,19 +140,31 @@ const RegistrationFormik = () => {
                                             name="password"
                                             type="password"
                                             className="rounded-pill form-control"
-
                                             onChange={formik.handleChange}
                                             value={formik.values.password}
                                             onBlur={formik.handleBlur}
                                             placeholder="Enter Password"
-
                                         />
                                         {formik.touched.password && formik.errors.password ? <div style={{ color: "red" }}>{formik.errors.password}</div> : null}
                                     </div>
+                                    <div className="form-group ">
+                                        <label className="form-label" >Confirm Password: </label>
+                                        <input
+                                            name="confirmPassword"
+                                            type="password"
+                                            className="rounded-pill form-control"
+                                            onChange={formik.handleChange}
+                                            value={formik.values.confirmPassword}
+                                            onBlur={formik.handleBlur}
+                                            placeholder="Enter confirm Password"
+                                        />
+                                        {formik.touched.confirmPassword && formik.errors.confirmPassword ? <div style={{ color: "red" }}>{formik.errors.confirmPassword}</div> : null}
+                                    </div>
+
                                     <div className="form-group text-center">
                                         <label className="form-label"></label>
-                                        <button type="submit" className="btn  rounded-pill">Save</button>
-                                        <button className="btn  rounded-pill"><Link to="/">Cancle</Link></button>
+                                        <button type="submit" className="btn btn-primary rounded-pill mr-4">Save</button>
+                                        <button className="btn btn-primary rounded-pill" onClick={cancleHandler}>Cancle</button>
                                     </div>
                                 </form>
                             </div>
@@ -136,4 +179,3 @@ const RegistrationFormik = () => {
 }
 
 export default RegistrationFormik
-

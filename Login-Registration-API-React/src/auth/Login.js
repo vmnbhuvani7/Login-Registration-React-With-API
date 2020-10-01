@@ -48,6 +48,11 @@ const Login = () => {
                 });
             })
     }
+    const registerHandler = () => {
+        history.push({
+            pathname: "/registration",
+        })
+    }
     const obj = localStorage.getItem('token')
 
     return (
@@ -65,19 +70,23 @@ const Login = () => {
                                             <center> <h1> Login </h1> </center>
                                             <div className="form-group  input-box">
                                                 <label >Email : </label>
-                                                <input
+                                                <div>
+                                                    <i className="fa fa-user-circle" aria-hidden="true"></i>
+                                                    <input
 
-                                                    type="email"
-                                                    onChange={changeHandler}
-                                                    value={signIn.login.email}
-                                                    name="email"
-                                                    placeholder="Enter Email"
-                                                    required
-                                                />
+                                                        type="email"
+                                                        onChange={changeHandler}
+                                                        value={signIn.login.email}
+                                                        name="email"
+                                                        placeholder="Enter Email"
+                                                        required
+                                                    />
+                                                </div>
                                             </div>
                                             <div className="form-group  input-box">
                                                 <label>Password : </label>
                                                 <div>
+                                                    <i className="fa fa-lock" aria-hidden="true"></i>
                                                     <input
                                                         type="password"
                                                         onChange={changeHandler}
@@ -93,8 +102,8 @@ const Login = () => {
                                             <input type="checkbox" onChange={this.changeHandler} /> Remember me
                                      </div> */}
                                             <div className="form-group text-center">
-                                                <button type="submit" className="btn btn-primary rounded-pill">Submit</button>
-                                                <button className="btn rounded-pill"><Link to="/registration"> Registration</Link></button>
+                                                <button type="submit" className="btn btn-primary rounded-pill mr-4">Submit</button>
+                                                <button className="btn rounded-pill btn-primary" onClick={registerHandler}> Registration</button>
                                             </div>
                                             <div className="form-group text-center">
                                                 <a href="#">Forgot password? </a>

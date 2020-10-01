@@ -2,7 +2,7 @@ import React from 'react';
 
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
 import Login from './auth/Login';
-import RegistrationFormik from './auth/RegistrationFormik';
+import RegistrationFormikYup from './auth/RegistrationFormikYup';
 import Header from './common/Header';
 import Dashboard from './page/Dashboard';
 import Home from './page/Home';
@@ -22,7 +22,7 @@ const MainRouter = () => {
                             else return <Home />
                         }}
                     />
-                    <Route exact path="/registration" component={RegistrationFormik} />
+                    <Route exact path="/registration" component={RegistrationFormikYup} />
                     <Route path="/login" component={Login} />
                     <Route path="/header" component={Header} />
                     <Route path="/home" component={Home} />
