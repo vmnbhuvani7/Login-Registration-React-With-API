@@ -1,6 +1,7 @@
 import React from 'react'
 import { Link } from 'react-router-dom';
 import Login from '../auth/Login';
+import Footer from '../common/Footer';
 import Header from '../common/Header';
 
 const Home = () => {
@@ -9,13 +10,13 @@ const Home = () => {
     }
     const obj = localStorage.getItem('token')
     return (
-        <div className="container">
+        <div className="container-fluid">
         
             {obj && (
                 <div>
                     <Header />
                     <p>Home Page</p>
-                    <button className="btn " onClick={clickLogout}><Link to="/">Logout</Link></button>
+                    <Footer />
                 </div>
             )}
             {!obj && <Login />}

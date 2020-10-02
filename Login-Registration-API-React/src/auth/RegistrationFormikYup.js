@@ -7,6 +7,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import Home from '../page/Home';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import * as Yup from 'yup'
+import TextError from './TextError';
 
 const RegistrationFormikYup = () => {
 
@@ -17,18 +18,20 @@ const RegistrationFormikYup = () => {
         email: '',
         password: '',
         confirmPassword: '',
+        uploadImage: '',
     }
 
     const onSubmit = (values) => {
         let data = {
             name: values.name,
             email: values.email,
-            password: values.password
+            password: values.password,
+            uploadImage: values.uploadImage,
         }
-
-        axios.post("http://localhost:3000/api/", data)
+        debugger
+        axios.post("http://localhost:3000/api", data)
             .then((response) => {
-                if (response.data === 'Email is Already Exist') {
+                if (response.data === 'Email is Exist') {
                     toast.error(response.data, {
                         position: toast.POSITION.TOP_CENTER
                     });
@@ -49,7 +52,9 @@ const RegistrationFormikYup = () => {
             .required('Required !'),
         password: Yup.string().required('Required !'),
         confirmPassword: Yup.string()
-            .oneOf([Yup.ref('password'), null], 'Passwords must match').required('Required !'),
+        .oneOf([Yup.ref('password'), null], 'Passwords must match').required('Required !'),
+        // uploadImage: Yup.array().required('Required !') .nullable(),
+        // uploadImage: Yup.mixed().required('A file is required'),
     })
 
     const cancleHandler = () => {
@@ -84,7 +89,7 @@ const RegistrationFormikYup = () => {
                                                 className="rounded-pill form-control"
                                                 placeholder="Enter Username"
                                             />
-                                            <ErrorMessage name="name" />
+                                            <ErrorMessage name="name" component={TextError} />
                                         </div>
 
                                         <div className="form-group ">
@@ -94,7 +99,7 @@ const RegistrationFormikYup = () => {
                                                 className="rounded-pill form-control"
                                                 placeholder="Enter Email"
                                             />
-                                            <ErrorMessage name="email" />
+                                            <ErrorMessage name="email" component={TextError} />
                                         </div>
 
                                         <div className="form-group ">
@@ -105,7 +110,7 @@ const RegistrationFormikYup = () => {
                                                 className="rounded-pill form-control"
                                                 placeholder="Enter Password"
                                             />
-                                            <ErrorMessage name="password" />
+                                            <ErrorMessage name="password" component={TextError} />
                                         </div>
 
                                         <div className="form-group ">
@@ -116,7 +121,16 @@ const RegistrationFormikYup = () => {
                                                 className="rounded-pill form-control"
                                                 placeholder="Enter confirm Password"
                                             />
-                                            <ErrorMessage name="confirmPassword" />
+                                            <ErrorMessage name="confirmPassword" component={TextError} />
+                                        </div>
+
+                                        <div className="form-group ">
+                                            <label className="form-label" >Upload Image: </label>
+                                            <Field
+                                                name="uploadImage"
+                                                type="file"
+                                            />
+                                            <ErrorMessage name="uploadImage" component={TextError} />
                                         </div>
 
                                         <div className="form-group text-center">
