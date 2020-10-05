@@ -1,35 +1,42 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { useHistory } from 'react-router-dom';
 import { ToastContainer, toast } from 'react-toastify';
 import axios from "axios";
-import './Form.css'
-import 'react-toastify/dist/ReactToastify.css';
-import Home from '../page/Home';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import * as Yup from 'yup'
+
 import TextError from './TextError';
+import Home from '../page/Home';
+
+import './Form.css'
+import 'react-toastify/dist/ReactToastify.css';
+
+const initialValues = {
+    name: '',
+    email: '',
+    password: '',
+    confirmPassword: '',
+}
 
 const RegistrationFormikYup = () => {
-
     const history = useHistory();
 
-    const initialValues = {
-        name: '',
-        email: '',
-        password: '',
-        confirmPassword: '',
-        uploadImage: '',
+    const [image, setImage] = useState()
+
+    const handleFileUpload = (event) => {
+        setImage(
+            event.target.files.item(0)
+        )
     }
 
     const onSubmit = (values) => {
-        let data = {
-            name: values.name,
-            email: values.email,
-            password: values.password,
-            uploadImage: values.uploadImage,
-        }
-        debugger
-        axios.post("http://localhost:3000/api", data)
+        const signUpForm = new FormData()
+        signUpForm.append('file', image)
+        signUpForm.append('name', values.name)
+        signUpForm.append('email', values.email)
+        signUpForm.append('password', values.password)
+
+        axios.post("http://localhost:3000/api", signUpForm)
             .then((response) => {
                 if (response.data === 'Email is Exist') {
                     toast.error(response.data, {
@@ -52,9 +59,7 @@ const RegistrationFormikYup = () => {
             .required('Required !'),
         password: Yup.string().required('Required !'),
         confirmPassword: Yup.string()
-        .oneOf([Yup.ref('password'), null], 'Passwords must match').required('Required !'),
-        // uploadImage: Yup.array().required('Required !') .nullable(),
-        // uploadImage: Yup.mixed().required('A file is required'),
+            .oneOf([Yup.ref('password'), null], 'Passwords must match').required('Required !'),
     })
 
     const cancleHandler = () => {
@@ -73,7 +78,8 @@ const RegistrationFormikYup = () => {
                     <Formik
                         initialValues={initialValues}
                         onSubmit={onSubmit}
-                        validationSchema={validationSchema}>
+                        validationSchema={validationSchema}
+                    >
 
                         <div className="row">
                             <div className='col-md-3'></div>
@@ -127,10 +133,10 @@ const RegistrationFormikYup = () => {
                                         <div className="form-group ">
                                             <label className="form-label" >Upload Image: </label>
                                             <Field
-                                                name="uploadImage"
+                                                name="file"
                                                 type="file"
+                                                onChange={handleFileUpload}
                                             />
-                                            <ErrorMessage name="uploadImage" component={TextError} />
                                         </div>
 
                                         <div className="form-group text-center">

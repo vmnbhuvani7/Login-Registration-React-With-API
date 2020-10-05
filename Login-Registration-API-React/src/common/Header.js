@@ -21,7 +21,9 @@ function Header() {
                     <Nav.Link className="text-white " href="/dashboard">Dashboard</Nav.Link>
                     <Button className="text-white bg-dark"
                         onClick={clickLogout}
-                        variant="outline-info">
+                        variant="outline-info"
+                        style={{ position: "absolute", right: "40px" }}
+                    >
                         Logout
                     </Button>
                 </Nav>

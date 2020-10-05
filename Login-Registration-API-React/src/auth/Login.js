@@ -28,8 +28,9 @@ const Login = () => {
     }
 
     const submitHandler = (event) => {
+        debugger
         event.preventDefault();
-        axios.post("http://localhost:3000/api/", signIn.login)
+        axios.post("http://localhost:3000/api/login", signIn.login)
             .then((response) => {
                 localStorage.setItem('token', response.data)
                 if (response.data) {
