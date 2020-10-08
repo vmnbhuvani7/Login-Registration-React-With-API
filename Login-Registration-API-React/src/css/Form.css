@@ -57,11 +57,22 @@ h1 {
     height: 850px;
 }
 
-.styleright{
+/* .styleright{
     display: flex;
     align-items: center;
     justify-content: space-between;
     margin: 10px;
-    /* d-flex align-items-center justify-content-between */
+} */
+
+.btnright{
+    position: absolute;
+    right: 40px;
 }
 
+.selecttag {
+    width: 154px;
+}
+
+.row {
+    margin-right: 0px !important;
+}

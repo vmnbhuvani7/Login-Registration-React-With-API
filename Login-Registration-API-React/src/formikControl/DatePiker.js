@@ -8,25 +8,27 @@ import 'react-datepicker/dist/react-datepicker.css'
 const DatePiker = (props) => {
     const { label, name, ...rest } = props
     return (
-        <div className="styleright">
+        <div className="d-flex align-items-center justify-content-between m-3">
             <label>{label}: </label>
-            <Field name={name}>
-                {
-                    ({ form, field }) => {
-                        const { setFieldValue } = form
-                        const { value } = field
-                        return (
-                            <DateView
-                                {...field}
-                                {...rest}
-                                selected={value}
-                                onChange={val => setFieldValue(name, val)}
-                            />
-                        )
+            <div >
+                <Field name={name}>
+                    {
+                        ({ form, field }) => {
+                            const { setFieldValue } = form
+                            const { value } = field
+                            return (
+                                <DateView
+                                    {...field}
+                                    {...rest}
+                                    selected={value}
+                                    onChange={val => setFieldValue(name, val)}
+                                />
+                            )
+                        }
                     }
-                }
-            </Field>
-            <ErrorMessage name={name} component={TextError} />
+                </Field>
+                <ErrorMessage name={name} component={TextError} />
+            </div>
         </div>
     )
 }

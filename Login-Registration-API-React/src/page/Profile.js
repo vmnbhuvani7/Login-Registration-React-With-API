@@ -16,46 +16,26 @@ const Profile = () => {
         email: '',
         image: '',
         isEdit: false,
+        countryOptions: []
     })
 
-    useEffect(() => {
-        axios.get(`${process.env.REACT_APP_API_URL}/test`,
-            {
-                headers: {
-                    'authentication-token': `${token}`,
-                    'Content-Type': 'application/json',
-                }
-            }
-        )
-            .then((response) => {
-                setProfile({
-                    name: response.data.name,
-                    email: response.data.email,
-                    image: response.data.image
-                })
-            })
-            .catch((error) => {
-                console.log(error);
-            })
-    }, [1]);
-
-    const countryOptions = [
-        { key: 'Select a option', value: '' },
-        { key: 'Option 1', value: 'Option 1' },
-        { key: 'Option 2', value: 'Option 2' },
-        { key: 'Option 3', value: 'Option 3' },
-    ]
+    // const countryOptions = [
+    //     { key: 'Select a option', value: '' },
+    //     { key: 'Option 1', value: 'Option 1' },
+    //     { key: 'Option 2', value: 'Option 2' },
+    //     { key: 'Option 3', value: 'Option 3' },
+    // ]
     const cityOptions = [
-        { key: 'Select a option', value: '' },
-        { key: 'Option 1', value: 'Option 1' },
-        { key: 'Option 2', value: 'Option 2' },
-        { key: 'Option 3', value: 'Option 3' },
+        { key: 'Select a city option', value: '' },
+        { key: 'Option city 1', value: 'Option 1' },
+        // { key: 'Option 2', value: 'Option 2' },
+        // { key: 'Option 3', value: 'Option 3' },
     ]
     const stateOptions = [
-        { key: 'Select a option', value: '' },
-        { key: 'Option 1', value: 'Option 1' },
-        { key: 'Option 2', value: 'Option 2' },
-        { key: 'Option 3', value: 'Option 3' },
+        { key: 'Select a state option', value: '' },
+        { key: 'Option state 1', value: 'Option 1' },
+        // { key: 'Option 2', value: 'Option 2' },
+        // { key: 'Option 3', value: 'Option 3' },
     ]
     const radioOptions = [
         { key: 'Male', value: 'Male' },
@@ -79,7 +59,6 @@ const Profile = () => {
     }
 
     const validationSchema = Yup.object({
-        name: Yup.string().required('Required !'),
         address: Yup.string().required('Required !'),
         countryOption: Yup.string().required('Required !'),
         stateOption: Yup.string().required('Required !'),
@@ -92,15 +71,61 @@ const Profile = () => {
 
     const onSubmit = values => {
         console.log("submit data", values);
-
     }
+
+    useEffect(() => {
+
+        axios.get(`${process.env.REACT_APP_API_URL}/test`,
+            {
+                headers: {
+                    'authentication-token': `${token}`,
+                    'Content-Type': 'application/json',
+                }
+            }
+        )
+            .then((response) => {
+                // debugger
+                setProfile({
+                    name: response.data.name,
+                    email: response.data.email,
+                    image: response.data.image,
+                })
+            })
+            .catch((error) => {
+                console.log(error);
+            })
+        // debugger
+        axios.get(`http://localhost:8000`)
+            .then((response) => {
+                // debugger
+                setProfile({
+                    ...profile,
+                    countryOptions: response.data
+                })
+                axios.get(`http://localhost:8000/${response.code}`)
+                .then((response) => {
+                    debugger
+                    setProfile({
+                        ...profile,
+                        countryOptions: response.data
+                    })
+                })
+                .catch((error) => {
+                    console.log(error);
+                })
+            })
+            .catch((error) => {
+                console.log(error);
+            })
+    }, [1]);
 
     const editProfile = () => {
         setProfile({
-            isEdit: true
+            ...profile,
+            isEdit: !profile.isEdit
         })
-    }
 
+    }
     return (
         <div>
             <Header />
@@ -111,18 +136,19 @@ const Profile = () => {
                         <img src={`${profile.image}`} className="rounded-circle" alt="not fount" />
                     </div>
                     <button
-                        className="btn btn-success w-50 mt-5 ml-4 p-3"
+                        className="btn btn-success w-75 mt-5 ml-5 p-3"
                         onClick={editProfile}
                     >EDIT MY PROFILE</button>
                 </div>
+
                 <div className="col-7">
                     <div className="block p-5">
                         <h2>Welcome back, {profile.name}!</h2>
                     </div>
-                    {/* {profile.isEdit && ( */}
+
+                    {profile.isEdit && (
 
                         <div className="block mt-5 p-3">
-
                             <Formik
                                 initialValues={initialValues}
                                 validationSchema={validationSchema}
@@ -131,7 +157,6 @@ const Profile = () => {
                                 {
                                     formik => (
                                         <Form>
-
                                             <FormikControl
                                                 control='textarea'
                                                 label='Address'
@@ -149,7 +174,8 @@ const Profile = () => {
                                                 control='select'
                                                 label='Country'
                                                 name='countryOption'
-                                                options={countryOptions}
+                                                // options={countryOptions}
+                                                options={profile.countryOptions}
                                             />
 
                                             <FormikControl
@@ -185,14 +211,15 @@ const Profile = () => {
                                                 name='pincode'
                                                 options={checkBoxOptions}
                                             />
-
-                                            <button type="submit" className="btn btn-success">Submit</button>
+                                            <div className="d-flex justify-content-end">
+                                                <button type="submit" className="btn btn-success mr-5">Submit</button>
+                                            </div>
                                         </Form>
                                     )
                                 }
                             </Formik>
                         </div>
-                    {/* )} */}
+                    )}
                 </div>
             </div>
             <Footer />

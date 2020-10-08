@@ -6,30 +6,32 @@ import TextError from '../auth/TextError'
 const CheckBoxGroup = (props) => {
     const { label, name, options, ...rest } = props
     return (
-        <div className="row">
-            <div className="col-2">
-                <label>{label}: </label>
-            </div>
-            <div className="col-10">
-                <Field name={name} {...rest} className="styleright">
-                    {
-                        ({ field }) => {
-                            return options.map(option => {
-                                return (
-                                    <div key={option.value}>
-                                        <input
-                                            type='checkbox'
-                                            {...field}
-                                            value={option.value}
-                                            checked={field.value.includes(option.value)}
-                                        />
-                                        <label >{option.key}</label>
-                                    </div>
-                                )
-                            })
+        <div className="d-flex align-items-center justify-content-between m-3">
+            <label>{label}: </label>
+
+            <div>
+                <div className="d-flex">
+                    <Field name={name} {...rest} className="styleright">
+                        {
+                            ({ field }) => {
+                                return options.map(option => {
+                                    return (
+                                        <div key={option.value}>
+                                            <input
+                                                className="mx-3"
+                                                type='checkbox'
+                                                {...field}
+                                                value={option.value}
+                                                checked={field.value.includes(option.value)}
+                                            />
+                                            <label >{option.key}</label>
+                                        </div>
+                                    )
+                                })
+                            }
                         }
-                    }
-                </Field>
+                    </Field>
+                </div>
                 <ErrorMessage name={name} component={TextError} />
             </div>
         </div>

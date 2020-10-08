@@ -6,10 +6,12 @@ import TextError from '../auth/TextError'
 const Textarea = (props) => {
     const { label, name, ...rest } = props
     return (
-        <div className="styleright">
+        <div className="d-flex align-items-center justify-content-between m-3">
             <label>{label}: </label>
-            <Field as='textarea' className="styleright" name={name} {...rest} />
-            <ErrorMessage name={name} component={TextError} />
+            <div>
+                <Field as='textarea' name={name} {...rest} />
+                <ErrorMessage name={name} component={TextError} />
+            </div>
         </div>
     )
 }
