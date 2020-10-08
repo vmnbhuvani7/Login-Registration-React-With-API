@@ -5,7 +5,7 @@ import { Link, useHistory } from 'react-router-dom';
 import { ToastContainer, toast } from 'react-toastify';
 import Home from '../page/Home';
 import axios from "axios";
-import './Form.css';
+import '../css/Form.css'
 import 'react-toastify/dist/ReactToastify.css';
 
 
@@ -22,7 +22,11 @@ const RegistrationHook = () => {
 
     const submitHandler = (event) => {
         event.preventDefault();
-        axios.post("http://localhost:3000/api/", values)
+        axios.post(`${process.env.REACT_APP_API_URL}/api/`, values, {
+            headers: {
+                'Content-Type': 'application/json',
+            }
+        })
             .then((response) => {
                 if (response.data === 'Email is Already Exist') {
                     toast.error(response.data, {

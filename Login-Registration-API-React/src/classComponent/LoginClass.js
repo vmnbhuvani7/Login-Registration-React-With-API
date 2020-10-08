@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 
-import './Form.css'
+import '../css/Form.css'
 import axios from "axios";
 import { Link } from 'react-router-dom';
 

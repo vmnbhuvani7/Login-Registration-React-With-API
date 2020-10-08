@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 
 import { Link } from 'react-router-dom'
-import './Form.css'
+import '../css/Form.css'
 
 export class LoginForm extends Component {
     state = {

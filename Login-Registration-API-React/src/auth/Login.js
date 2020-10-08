@@ -1,9 +1,9 @@
 import React, { useState } from 'react'
 
-import { Link, useHistory } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 import { toast, ToastContainer } from 'react-toastify';
 import axios from "axios";
-import './Form.css'
+import '../css/Form.css'
 import Home from '../page/Home';
 
 const Login = () => {
@@ -28,9 +28,12 @@ const Login = () => {
     }
 
     const submitHandler = (event) => {
-        debugger
         event.preventDefault();
-        axios.post("http://localhost:3000/api/login", signIn.login)
+        axios.post(`${process.env.REACT_APP_API_URL}/api/login`, signIn.login, {
+            headers: {
+                'Content-Type': 'application/json',
+            }
+        })
             .then((response) => {
                 localStorage.setItem('token', response.data)
                 if (response.data) {

@@ -1,5 +1,6 @@
 import React from 'react'
-import '../auth/Form.css'
+import '../css/Form.css'
+
 const Footer = () => {
     return (
         <div className="footer">

@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 
 import axios from "axios";
-import './Form.css'
+import '../css/Form.css'
 import { Link } from 'react-router-dom';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -29,7 +29,11 @@ class RegistrationClass extends Component {
 
     submitHandler = (event) => {
         event.preventDefault();
-        axios.post("http://localhost:3000/api/", this.state.registration)
+        axios.post(`${process.env.REACT_APP_API_URL}/api/`, this.state.registration, {
+            headers: {
+                'Content-Type': 'application/json',
+            }
+        })
             .then((response) => {
                 toast.error(response.data, {
                     position: toast.POSITION.TOP_LEFT
@@ -47,7 +51,7 @@ class RegistrationClass extends Component {
                             password: '',
                         },
                     })
-                    this.props.history.push(`/`);
+                    this.props.history.push(`/ `);
                 }
             })
             .catch((error) => {

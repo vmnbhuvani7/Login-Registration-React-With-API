@@ -8,7 +8,7 @@ import * as Yup from 'yup'
 import TextError from './TextError';
 import Home from '../page/Home';
 
-import './Form.css'
+import '../css/Form.css'
 import 'react-toastify/dist/ReactToastify.css';
 
 const initialValues = {
@@ -36,7 +36,11 @@ const RegistrationFormikYup = () => {
         signUpForm.append('email', values.email)
         signUpForm.append('password', values.password)
 
-        axios.post("http://localhost:3000/api", signUpForm)
+        axios.post(`${process.env.REACT_APP_API_URL}/api`, signUpForm, {
+            headers: {
+                'Content-Type': 'application/json',
+            }
+        })
             .then((response) => {
                 if (response.data === 'Email is Exist') {
                     toast.error(response.data, {
