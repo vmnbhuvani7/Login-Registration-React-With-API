@@ -12,14 +12,29 @@ function Header() {
             pathname: "/",
         })
     }
+    const homeHandler = () => {
+        history.push({
+            pathname: "/home",
+        })
+    }
+    const profileHandler = () => {
+        history.push({
+            pathname: "/profile",
+        })
+    }
+    const dashboardHandler = () => {
+        history.push({
+            pathname: "/dashboard",
+        })
+    }
     return (
         <div>
             <Navbar bg="primary" variant="dark">
-                <Navbar.Brand href="#home">Navbar</Navbar.Brand>
+                <Navbar.Brand >Navbar</Navbar.Brand>
                 <Nav >
-                    <Nav.Link className="text-white " href="/home">Home</Nav.Link>
-                    <Nav.Link className="text-white " href="/profile">Profile</Nav.Link>
-                    <Nav.Link className="text-white " href="/dashboard">Dashboard</Nav.Link>
+                    <Nav.Link className="text-white" onClick={homeHandler}>Home</Nav.Link>
+                    <Nav.Link className="text-white" onClick={profileHandler}>Profile</Nav.Link>
+                    <Nav.Link className="text-white" onClick={dashboardHandler}>Dashboard</Nav.Link>
                     <Button className="text-white bg-dark btnright"
                         onClick={clickLogout}
                         variant="outline-info"

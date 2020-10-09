@@ -7,12 +7,12 @@ const Home = () => {
     
     const obj = localStorage.getItem('token')
     return (
-        <div className="container-fluid">
+        <div>
         
             {obj && (
                 <div>
                     <Header />
-                    <p>Home Page</p>
+                    <p className="text-center">Home Page</p>
                     <Footer />
                 </div>
             )}

@@ -7,11 +7,11 @@ function Dashboard() {
     const obj = localStorage.getItem('token')
 
     return (
-        <div className="container-fluid">
+        <div>
             {obj && (
                 <div>
                     <Header />
-                    <p>Dashboard Component</p>
+                    <p className="text-center">Dashboard Component</p>
                     <Footer />
                 </div>
             )}

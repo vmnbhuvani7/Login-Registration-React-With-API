@@ -11,32 +11,40 @@ import FormikControl from '../common/FormikControl'
 const Profile = () => {
     const token = localStorage.getItem('token')
 
+    const [edit, setEdit] = useState({
+        isEdit: false,
+    })
     const [profile, setProfile] = useState({
         name: '',
         email: '',
         image: '',
-        isEdit: false,
-        countryOptions: []
+        countryOptions: [],
+        stateOptions: [],
+        cityOptions: [],
     })
 
-    // const countryOptions = [
-    //     { key: 'Select a option', value: '' },
-    //     { key: 'Option 1', value: 'Option 1' },
-    //     { key: 'Option 2', value: 'Option 2' },
-    //     { key: 'Option 3', value: 'Option 3' },
-    // ]
-    const cityOptions = [
-        { key: 'Select a city option', value: '' },
-        { key: 'Option city 1', value: 'Option 1' },
-        // { key: 'Option 2', value: 'Option 2' },
-        // { key: 'Option 3', value: 'Option 3' },
-    ]
-    const stateOptions = [
-        { key: 'Select a state option', value: '' },
-        { key: 'Option state 1', value: 'Option 1' },
-        // { key: 'Option 2', value: 'Option 2' },
-        // { key: 'Option 3', value: 'Option 3' },
-    ]
+    useEffect(() => {
+        axios.get(`${process.env.REACT_APP_API_URL}/test`,
+            {
+                headers: {
+                    'authentication-token': `${token}`,
+                    'Content-Type': 'application/json',
+                }
+            }
+        )
+            .then((response) => {
+                setProfile({
+                    ...profile,
+                    name: response.data.name,
+                    email: response.data.email,
+                    image: response.data.image,
+                })
+            })
+            .catch((error) => {
+                console.log(error);
+            })
+    }, []);
+
     const radioOptions = [
         { key: 'Male', value: 'Male' },
         { key: 'Female', value: 'Female' },
@@ -73,57 +81,116 @@ const Profile = () => {
         console.log("submit data", values);
     }
 
-    useEffect(() => {
+    // const pobj1 = new Promise((resolve, reject) => {
+    //      axios.get(`${process.env.REACT_APP_API_URL_COUNTRY}`).then((response) => {
+    //         setProfile({
+    //             ...profile,
+    //             countryOptions: response && response.data
+    //         })
+    //         resolve(profile.countryOptions);
+    //     })
+    // })
+    // pobj1.then((data) => {
+    //     console.log(data);
+    // })
 
-        axios.get(`${process.env.REACT_APP_API_URL}/test`,
-            {
-                headers: {
-                    'authentication-token': `${token}`,
-                    'Content-Type': 'application/json',
-                }
-            }
-        )
-            .then((response) => {
-                // debugger
-                setProfile({
-                    name: response.data.name,
-                    email: response.data.email,
-                    image: response.data.image,
-                })
-            })
-            .catch((error) => {
-                console.log(error);
-            })
-        // debugger
-        axios.get(`http://localhost:8000`)
-            .then((response) => {
-                // debugger
-                setProfile({
-                    ...profile,
-                    countryOptions: response.data
-                })
-                axios.get(`http://localhost:8000/${response.code}`)
-                .then((response) => {
-                    debugger
-                    setProfile({
-                        ...profile,
-                        countryOptions: response.data
-                    })
-                })
-                .catch((error) => {
-                    console.log(error);
-                })
-            })
-            .catch((error) => {
-                console.log(error);
-            })
-    }, [1]);
+    // const getBiodata = (index) => {
+    //     return new Promise((resolve, reject) => {
+    //         setTimeout((index) => {
+    //             let biodata = {
+    //                 name: 'vmn',
+    //                 age: 26
+    //             }
+    //             resolve(`my roll no ${index} name ${biodata.name} age ${biodata.age}`)
+    //         }, 2000, index)
+    //     })
+    // }
+
+    // async function getData() {
+    //     const rollnodata = await pobj1;
+    //     console.log(rollnodata);
+
+    //     const biodatas = await getBiodata(rollnodata[1]);
+    //     console.log(biodatas);
+    // }
+    // getData();
+
 
     const editProfile = () => {
-        setProfile({
-            ...profile,
-            isEdit: !profile.isEdit
+        setEdit({
+            isEdit: !edit.isEdit
         })
+
+        // axios.get(`${process.env.REACT_APP_API_URL_COUNTRY}`)
+        //     .then((response) => {
+        //         setProfile({
+        //             ...profile,
+        //             countryOptions: response && response.data
+        //         })
+        //         axios.post(`${process.env.REACT_APP_API_URL_COUNTRY}/in`, profile)
+        //             .then((response) => {
+        //                 setProfile({
+        //                     ...profile,
+        //                     stateOptions: response && response.data
+        //                 })
+        //                 axios.post(`${process.env.REACT_APP_API_URL_COUNTRY}/in/gj`, profile)
+        //                     .then((response) => {
+        //                         setProfile({
+        //                             ...profile,
+        //                             cityOptions: response && response.data
+        //                         })
+        //                     })
+        //                     .catch((error) => {
+        //                         console.log(error);
+        //                     })
+        //             })
+        //             .catch((error) => {
+        //                 console.log(error);
+        //             })
+        //     })
+        //     .catch((error) => {
+        //         console.log(error);
+        //     })
+
+
+        // -----------country api -------------
+
+        axios.get(`${process.env.REACT_APP_API_URL_COUNTRY}`)
+            .then((response) => {
+                setProfile({
+                    ...profile,
+                    countryOptions: response && response.data
+                })
+            })
+            .catch((error) => {
+                console.log(error);
+            })
+
+        // -----------State api -------------
+
+        // axios.post(`${process.env.REACT_APP_API_URL_COUNTRY}/af`, profile)
+        //     .then((response) => {
+        //         setProfile({
+        //             ...profile,
+        //             stateOptions: response && response.data
+        //         })
+        //     })
+        //     .catch((error) => {
+        //         console.log(error);
+        //     })
+
+        // -----------city api -------------
+
+        // axios.post(`${process.env.REACT_APP_API_URL_COUNTRY}/in/gj`, profile)
+        //     .then((response) => {
+        //         setProfile({
+        //             ...profile,
+        //             cityOptions: response && response.data
+        //         })
+        //     })
+        //     .catch((error) => {
+        //         console.log(error);
+        //     })
 
     }
     return (
@@ -136,7 +203,7 @@ const Profile = () => {
                         <img src={`${profile.image}`} className="rounded-circle" alt="not fount" />
                     </div>
                     <button
-                        className="btn btn-success w-75 mt-5 ml-5 p-3"
+                        className="btn btn-success w-50 mt-5 ml-5 p-3"
                         onClick={editProfile}
                     >EDIT MY PROFILE</button>
                 </div>
@@ -146,7 +213,7 @@ const Profile = () => {
                         <h2>Welcome back, {profile.name}!</h2>
                     </div>
 
-                    {profile.isEdit && (
+                    {edit.isEdit && (
 
                         <div className="block mt-5 p-3">
                             <Formik
@@ -182,14 +249,16 @@ const Profile = () => {
                                                 control='select'
                                                 label='State'
                                                 name='stateOption'
-                                                options={stateOptions}
+                                                // options={stateOptions}
+                                                options={profile.stateOptions}
                                             />
 
                                             <FormikControl
                                                 control='select'
                                                 label='City'
                                                 name='cityOption'
-                                                options={cityOptions}
+                                                // options={cityOptions}
+                                                options={profile.cityOptions}
                                             />
 
                                             <FormikControl
@@ -222,9 +291,7 @@ const Profile = () => {
                     )}
                 </div>
             </div>
-            <Footer />
-
-
+            {/* <Footer /> */}
         </div>
     )
 }
