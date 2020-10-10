@@ -18,6 +18,7 @@ const Profile = () => {
         name: '',
         email: '',
         image: '',
+        contry: '',
         countryOptions: [],
         stateOptions: [],
         cityOptions: [],
@@ -43,7 +44,7 @@ const Profile = () => {
             .catch((error) => {
                 console.log(error);
             })
-    }, []);
+    }, [profile.name, profile.email, profile.image]);
 
     const radioOptions = [
         { key: 'Male', value: 'Male' },
@@ -57,10 +58,10 @@ const Profile = () => {
     ]
     const initialValues = {
         address: '',
+        countryOptions: '',
+        stateOptions: '',
+        cityOptions: '',
         radioOption: '',
-        countryOption: '',
-        stateOption: '',
-        cityOption: '',
         checkBoxOption: [],
         birthDate: null,
         pincode: '',
@@ -68,9 +69,9 @@ const Profile = () => {
 
     const validationSchema = Yup.object({
         address: Yup.string().required('Required !'),
-        countryOption: Yup.string().required('Required !'),
-        stateOption: Yup.string().required('Required !'),
-        cityOption: Yup.string().required('Required !'),
+        countryOptions: Yup.string().required('Required !'),
+        stateOptions: Yup.string().required('Required !'),
+        cityOptions: Yup.string().required('Required !'),
         radioOption: Yup.string().required('Required !'),
         checkBoxOption: Yup.array().required('Required !'),
         birthDate: Yup.date().required('Required !').nullable(),
@@ -78,80 +79,14 @@ const Profile = () => {
     })
 
     const onSubmit = values => {
+        debugger
         console.log("submit data", values);
     }
-
-    // const pobj1 = new Promise((resolve, reject) => {
-    //      axios.get(`${process.env.REACT_APP_API_URL_COUNTRY}`).then((response) => {
-    //         setProfile({
-    //             ...profile,
-    //             countryOptions: response && response.data
-    //         })
-    //         resolve(profile.countryOptions);
-    //     })
-    // })
-    // pobj1.then((data) => {
-    //     console.log(data);
-    // })
-
-    // const getBiodata = (index) => {
-    //     return new Promise((resolve, reject) => {
-    //         setTimeout((index) => {
-    //             let biodata = {
-    //                 name: 'vmn',
-    //                 age: 26
-    //             }
-    //             resolve(`my roll no ${index} name ${biodata.name} age ${biodata.age}`)
-    //         }, 2000, index)
-    //     })
-    // }
-
-    // async function getData() {
-    //     const rollnodata = await pobj1;
-    //     console.log(rollnodata);
-
-    //     const biodatas = await getBiodata(rollnodata[1]);
-    //     console.log(biodatas);
-    // }
-    // getData();
-
 
     const editProfile = () => {
         setEdit({
             isEdit: !edit.isEdit
         })
-
-        // axios.get(`${process.env.REACT_APP_API_URL_COUNTRY}`)
-        //     .then((response) => {
-        //         setProfile({
-        //             ...profile,
-        //             countryOptions: response && response.data
-        //         })
-        //         axios.post(`${process.env.REACT_APP_API_URL_COUNTRY}/in`, profile)
-        //             .then((response) => {
-        //                 setProfile({
-        //                     ...profile,
-        //                     stateOptions: response && response.data
-        //                 })
-        //                 axios.post(`${process.env.REACT_APP_API_URL_COUNTRY}/in/gj`, profile)
-        //                     .then((response) => {
-        //                         setProfile({
-        //                             ...profile,
-        //                             cityOptions: response && response.data
-        //                         })
-        //                     })
-        //                     .catch((error) => {
-        //                         console.log(error);
-        //                     })
-        //             })
-        //             .catch((error) => {
-        //                 console.log(error);
-        //             })
-        //     })
-        //     .catch((error) => {
-        //         console.log(error);
-        //     })
-
 
         // -----------country api -------------
 
@@ -165,34 +100,49 @@ const Profile = () => {
             .catch((error) => {
                 console.log(error);
             })
-
-        // -----------State api -------------
-
-        // axios.post(`${process.env.REACT_APP_API_URL_COUNTRY}/af`, profile)
-        //     .then((response) => {
-        //         setProfile({
-        //             ...profile,
-        //             stateOptions: response && response.data
-        //         })
-        //     })
-        //     .catch((error) => {
-        //         console.log(error);
-        //     })
-
-        // -----------city api -------------
-
-        // axios.post(`${process.env.REACT_APP_API_URL_COUNTRY}/in/gj`, profile)
-        //     .then((response) => {
-        //         setProfile({
-        //             ...profile,
-        //             cityOptions: response && response.data
-        //         })
-        //     })
-        //     .catch((error) => {
-        //         console.log(error);
-        //     })
-
     }
+
+    const getdata = (value) => {
+        {
+            !profile.contry && (
+                axios.post(`${process.env.REACT_APP_API_URL_COUNTRY}/${value}`)
+                    .then((response) => {
+                        {
+                            response && response.data && (
+                                setProfile({
+                                    ...profile,
+                                    stateOptions: response && response.data,
+                                    contry: value
+                                })
+                            )
+                        }
+                    })
+                    .catch((error) => {
+                        console.log(error);
+                    })
+            )
+        }
+
+        {
+            profile.contry && (
+                axios.post(`${process.env.REACT_APP_API_URL_COUNTRY}/${profile.contry}/${value}`)
+                    .then((response) => {
+                        {
+                            response && response.data && (
+                                setProfile({
+                                    ...profile,
+                                    cityOptions: response && response.data,
+                                })
+                            )
+                        }
+                    })
+                    .catch((error) => {
+                        console.log(error);
+                    })
+            )
+        }
+    }
+
     return (
         <div>
             <Header />
@@ -240,24 +190,26 @@ const Profile = () => {
                                             <FormikControl
                                                 control='select'
                                                 label='Country'
-                                                name='countryOption'
-                                                // options={countryOptions}
+                                                name='countryOptions'
+                                                countryValue={getdata}
                                                 options={profile.countryOptions}
                                             />
 
                                             <FormikControl
                                                 control='select'
                                                 label='State'
-                                                name='stateOption'
-                                                // options={stateOptions}
+                                                name='stateOptions'
+                                                // stateValues={getdata}
+                                                countryValue={getdata}
                                                 options={profile.stateOptions}
                                             />
 
                                             <FormikControl
                                                 control='select'
                                                 label='City'
-                                                name='cityOption'
+                                                name='cityOptions'
                                                 // options={cityOptions}
+                                                countryValue={getdata}
                                                 options={profile.cityOptions}
                                             />
 
@@ -281,7 +233,7 @@ const Profile = () => {
                                                 options={checkBoxOptions}
                                             />
                                             <div className="d-flex justify-content-end">
-                                                <button type="submit" className="btn btn-success mr-5">Submit</button>
+                                                <button type="submit" className="btn btn-success mr-5" onSubmit={() => onSubmit()}>Submit</button>
                                             </div>
                                         </Form>
                                     )

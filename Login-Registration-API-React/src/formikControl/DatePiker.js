@@ -11,7 +11,7 @@ const DatePiker = (props) => {
         <div className="d-flex align-items-center justify-content-between m-3">
             <label>{label}: </label>
             <div >
-                <Field name={name}>
+                <Field name={name} className="formStyle">
                     {
                         ({ form, field }) => {
                             const { setFieldValue } = form
@@ -20,6 +20,7 @@ const DatePiker = (props) => {
                                 <DateView
                                     {...field}
                                     {...rest}
+                                    className="formStyle"
                                     selected={value}
                                     onChange={val => setFieldValue(name, val)}
                                 />
