@@ -35,7 +35,17 @@ const RegistrationFormikYup = () => {
         signUpForm.append('name', values.name)
         signUpForm.append('email', values.email)
         signUpForm.append('password', values.password)
+        // let data = {
+        //     'file': image,
+        //     'name': values.name,
+        //     'email': values.email,
+        //     'password': values.password,
+        // }
 
+        // signup(data).then(data => {
+        //     console.log(data);
+        //     debugger
+        // })
         axios.post(`${process.env.REACT_APP_API_URL}/api`, signUpForm, {
             headers: {
                 'Content-Type': 'application/json',
@@ -68,14 +78,14 @@ const RegistrationFormikYup = () => {
 
     const cancleHandler = () => {
         history.push({
-            pathname: "/",
+            pathname: "/login",
         })
     }
 
     const obj = localStorage.getItem('token')
 
     return (
-        <div className="container" >
+        <div>
             {!obj && (
                 <div>
                     <ToastContainer />

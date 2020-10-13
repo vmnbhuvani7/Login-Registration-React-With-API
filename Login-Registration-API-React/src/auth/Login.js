@@ -29,6 +29,20 @@ const Login = () => {
 
     const submitHandler = (event) => {
         event.preventDefault();
+        // let abc = {
+        //     'email': signIn.login.email,
+        //     'password': signIn.login.password,
+        // };
+        // const { email, password } = signIn.login
+        // const user = {
+        //     email,
+        //     password,
+        // };
+
+        // signin(user).then(data => {
+        //     console.log("data of login", data);
+        //     debugger
+        // })
         axios.post(`${process.env.REACT_APP_API_URL}/api/login`, signIn.login, {
             headers: {
                 'Content-Type': 'application/json',

@@ -7,28 +7,20 @@ import Header from './common/Header';
 import Dashboard from './page/Dashboard';
 import Home from './page/Home';
 import Profile from './page/Profile';
+import PrivteRouter from './auth/priveteRouter'
 
 const MainRouter = () => {
     return (
         <div>
             <BrowserRouter>
                 <Switch>
-                    <Route exact path="/"
-                        render={() => {
-                            let obj = localStorage.getItem('token')
-                            if (obj === null) {
-                                return <Login />
-                            }
-                            else return <Home />
-                        }}
-                    />
+                    <Route exact path="/" component={RegistrationFormikYup} />
                     <Route exact path="/registration" component={RegistrationFormikYup} />
                     <Route path="/login" component={Login} />
-                    <Route path="/header" component={Header} />
-                    <Route path="/home" component={Home} />
-                    <Route path="/profile" component={Profile} />
-                    <Route path="/dashboard" component={Dashboard} />
-
+                    <PrivteRouter exact path="/header" component={Header} ></PrivteRouter>
+                    <PrivteRouter exact path="/home" component={Home} ></PrivteRouter>
+                    <PrivteRouter exact path="/profile" component={Profile} ></PrivteRouter>
+                    <PrivteRouter exact path="/dashboard" component={Dashboard} ></PrivteRouter>
                 </Switch>
             </BrowserRouter>
         </div>

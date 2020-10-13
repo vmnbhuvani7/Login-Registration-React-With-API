@@ -12,18 +12,31 @@ const Profile = () => {
     const token = localStorage.getItem('token')
 
     const [edit, setEdit] = useState({
-        isEdit: false,
+
     })
     const [profile, setProfile] = useState({
         name: '',
         email: '',
         image: '',
         contry: '',
+        state: '',
+        city: '',
         countryOptions: [],
         stateOptions: [],
         cityOptions: [],
     })
 
+    const [getData, setGetData] = useState({
+        isEdit: false,
+        address: '',
+        gender: '',
+        birthdate: '',
+        hobby: '',
+        zip: '',
+        country: '',
+        state: '',
+        city: '',
+    })
     useEffect(() => {
         axios.get(`${process.env.REACT_APP_API_URL}/test`,
             {
@@ -47,48 +60,42 @@ const Profile = () => {
     }, [profile.name, profile.email, profile.image]);
 
     const radioOptions = [
-        { key: 'Male', value: 'Male' },
-        { key: 'Female', value: 'Female' },
-        { key: 'Other', value: 'Other' },
+        { key: 'male', value: 'male' },
+        { key: 'female', value: 'female' },
+        { key: 'other', value: 'other' },
     ]
     const checkBoxOptions = [
         { key: 'Option 1', value: 'Option 1' },
         { key: 'Option 2', value: 'Option 2' },
         { key: 'Option 3', value: 'Option 3' },
     ]
-    const initialValues = {
+
+    let initialValues = {
         address: '',
-        countryOptions: '',
-        stateOptions: '',
-        cityOptions: '',
-        radioOption: '',
-        checkBoxOption: [],
-        birthDate: null,
-        pincode: '',
+        gender: '',
+        hobby: '',
+        birthdate: '',
+        zip: '',
+        contry: '',
+        state: '',
+        city: '',
     }
 
     const validationSchema = Yup.object({
         address: Yup.string().required('Required !'),
-        countryOptions: Yup.string().required('Required !'),
-        stateOptions: Yup.string().required('Required !'),
-        cityOptions: Yup.string().required('Required !'),
-        radioOption: Yup.string().required('Required !'),
-        checkBoxOption: Yup.array().required('Required !'),
-        birthDate: Yup.date().required('Required !').nullable(),
-        pincode: Yup.string().required('Required !'),
+        // contry: Yup.string().required('Required !'),
+        // state: Yup.string().required('Required !'),
+        // city: Yup.string().required('Required !'),
+        gender: Yup.string().required('Required !'),
+        hobby: Yup.array().required('Required !'),
+        birthdate: Yup.date().required('Required !').nullable(),
+        zip: Yup.string().required('Required !'),
     })
 
-    const onSubmit = values => {
-        debugger
-        console.log("submit data", values);
-    }
-
     const editProfile = () => {
-        setEdit({
-            isEdit: !edit.isEdit
+        setGetData({
+            isEdit: true
         })
-
-        // -----------country api -------------
 
         axios.get(`${process.env.REACT_APP_API_URL_COUNTRY}`)
             .then((response) => {
@@ -112,7 +119,7 @@ const Profile = () => {
                                 setProfile({
                                     ...profile,
                                     stateOptions: response && response.data,
-                                    contry: value
+                                    contry: value,
                                 })
                             )
                         }
@@ -132,6 +139,7 @@ const Profile = () => {
                                 setProfile({
                                     ...profile,
                                     cityOptions: response && response.data,
+                                    state: value,
                                 })
                             )
                         }
@@ -141,6 +149,52 @@ const Profile = () => {
                     })
             )
         }
+    }
+
+    const getCity = (value) => {
+        setProfile({
+            ...profile,
+            city: value,
+        })
+    }
+
+    const onSubmit = values => {
+        let data = {
+            "address": values.address,
+            "gender": values.gender,
+            "birthdate": values.birthdate,
+            "hobby": values.hobby,
+            "zip": values.zip,
+            "country": profile.contry,
+            "state": profile.state,
+            "city": profile.city,
+        }
+
+        axios.post(`${process.env.REACT_APP_API_URL}/api/addUserInfo`, data,
+            {
+                headers: {
+                    'authentication-token': `${token}`,
+                    'Content-Type': 'application/json',
+                }
+            },
+        )
+            .then((response) => {
+                console.log(response);
+                setGetData({
+                    getData: false,
+                    address: response.data.address,
+                    gender: response.data.gender,
+                    birthdate: response.data.birthdate,
+                    hobby: response.data.hobby,
+                    zip: response.data.zip,
+                    country: response.data.country,
+                    state: response.data.state,
+                    city: response.data.city,
+                })
+            })
+            .catch((error) => {
+                console.log(error);
+            })
     }
 
     return (
@@ -163,7 +217,7 @@ const Profile = () => {
                         <h2>Welcome back, {profile.name}!</h2>
                     </div>
 
-                    {edit.isEdit && (
+                    {getData.isEdit && (
 
                         <div className="block mt-5 p-3">
                             <Formik
@@ -183,14 +237,15 @@ const Profile = () => {
                                             <FormikControl
                                                 control='radio'
                                                 label='Gender'
-                                                name='radioOption'
+                                                name='gender'
                                                 options={radioOptions}
                                             />
 
                                             <FormikControl
                                                 control='select'
                                                 label='Country'
-                                                name='countryOptions'
+                                                name='contry'
+
                                                 countryValue={getdata}
                                                 options={profile.countryOptions}
                                             />
@@ -198,8 +253,7 @@ const Profile = () => {
                                             <FormikControl
                                                 control='select'
                                                 label='State'
-                                                name='stateOptions'
-                                                // stateValues={getdata}
+                                                name='state'
                                                 countryValue={getdata}
                                                 options={profile.stateOptions}
                                             />
@@ -207,30 +261,28 @@ const Profile = () => {
                                             <FormikControl
                                                 control='select'
                                                 label='City'
-                                                name='cityOptions'
-                                                // options={cityOptions}
-                                                countryValue={getdata}
+                                                name='city'
+                                                countryValue={getCity}
                                                 options={profile.cityOptions}
                                             />
 
                                             <FormikControl
                                                 control='date'
                                                 label='Birth Date'
-                                                name='birthDate'
+                                                name='birthdate'
                                             />
 
                                             <FormikControl
                                                 control='checkbox'
                                                 label='Hobby'
-                                                name='checkBoxOption'
+                                                name='hobby'
                                                 options={checkBoxOptions}
                                             />
 
                                             <FormikControl
                                                 control='input'
                                                 label='Pincode'
-                                                name='pincode'
-                                                options={checkBoxOptions}
+                                                name='zip'
                                             />
                                             <div className="d-flex justify-content-end">
                                                 <button type="submit" className="btn btn-success mr-5" onSubmit={() => onSubmit()}>Submit</button>
@@ -241,9 +293,46 @@ const Profile = () => {
                             </Formik>
                         </div>
                     )}
+
+                    {!getData.isEdit && (
+                        <div className="block mt-5 p-3">
+                            <div className="d-flex align-items-center justify-content-between m-3">
+                                <lable className="formStyle font-weight-bold my-2">Address:</lable>
+                                <p className="font-weight-bold">{getData.address}</p>
+                            </div>
+                            <div className="d-flex align-items-center justify-content-between m-3">
+                                <lable className="formStyle font-weight-bold my-2 ">Gender:</lable>
+                                <p className="font-weight-bold">{getData.gender}</p>
+                            </div>
+                            <div className="d-flex align-items-center justify-content-between m-3">
+                                <lable className="formStyle font-weight-bold my-2">Birthdate:</lable>
+                                <p className="font-weight-bold">{getData.birthdate}</p>
+                            </div>
+                            <div className="d-flex align-items-center justify-content-between m-3">
+                                <lable className="formStyle font-weight-bold my-2">Hobby:</lable>
+                                <p className="font-weight-bold">{getData.hobby}</p>
+                            </div>
+                            <div className="d-flex align-items-center justify-content-between m-3">
+                                <lable className="formStyle font-weight-bold my-2">Zip:</lable>
+                                <p className="font-weight-bold">{getData.zip}</p>
+                            </div>
+                            <div className="d-flex align-items-center justify-content-between m-3">
+                                <lable className="formStyle font-weight-bold my-2">Country:</lable>
+                                <p className="font-weight-bold">{getData.country}</p>
+                            </div>
+                            <div className="d-flex align-items-center justify-content-between m-3">
+                                <lable className="formStyle font-weight-bold my-2">State:</lable>
+                                <p className="font-weight-bold">{getData.state}</p>
+                            </div>
+                            <div className="d-flex align-items-center justify-content-between m-3">
+                                <lable className="formStyle font-weight-bold my-2">City:</lable>
+                                <p className="font-weight-bold">{getData.city}</p>
+                            </div>
+                        </div>
+                    )}
                 </div>
             </div>
-            {/* <Footer /> */}
+            <Footer />
         </div>
     )
 }
