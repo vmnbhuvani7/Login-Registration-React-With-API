@@ -3,7 +3,7 @@ import '../css/Form.css'
 
 const Footer = () => {
     return (
-        <div className="footer">
+        <div className="footer mt-5">
             <div className="row">
                 <div className="col-md-12 text-center">
                     <div className="mb-3 ">
@@ -15,7 +15,7 @@ const Footer = () => {
                         <i className="fab fa-pinterest fa-lg white-text fa-2x"> </i>
                     </div>
                     <div className="footer-copyright text-center py-3">© 2020 Copyright:
-                            <a href="https://mdbootstrap.com/"> MDBootstrap.com</a>
+                            <a href="https://github.com/vmnbhuvani7"> Github: vmnbhuvani7</a>
                     </div>
                 </div>
             </div>

@@ -14,9 +14,6 @@ h1 {
     margin-bottom: 40px;
 }
 
-/* input {
-    border: none;
-} */
 .input-box {
     margin: 31px auto;
     width: 80%;
@@ -42,7 +39,6 @@ h1 {
 }
 
 .footer {
-    position: fixed;
     bottom: 0px;
     left: 0px;
     right: 0px;
@@ -54,15 +50,7 @@ h1 {
 
 .bgcolore {
     background-color:#f6faff;
-    height: 850px;
 }
-
-/* .styleright{
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    margin: 10px;
-} */
 
 .btnright{
     position: absolute;
@@ -75,4 +63,8 @@ h1 {
 
 .row {
     margin-right: 0px !important;
+}
+
+.height-img{
+    height: 125px;
 }

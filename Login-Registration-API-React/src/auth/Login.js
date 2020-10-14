@@ -1,12 +1,13 @@
 import React, { useState } from 'react'
 
 import { useHistory } from 'react-router-dom';
-import { toast, ToastContainer } from 'react-toastify';
+import { toast } from 'react-toastify';
 import axios from "axios";
 import '../css/Form.css'
 import Home from '../page/Home';
 
 const Login = () => {
+    const history = useHistory();
     const [signIn, setSignIn] = useState({
         login: {
             email: '',
@@ -14,9 +15,6 @@ const Login = () => {
         },
         isLogin: false
     })
-
-    const history = useHistory();
-
     const changeHandler = (event) => {
         setSignIn({
             ...signIn,
@@ -29,7 +27,7 @@ const Login = () => {
 
     const submitHandler = (event) => {
         event.preventDefault();
-        // let abc = {
+        // let user = {
         //     'email': signIn.login.email,
         //     'password': signIn.login.password,
         // };
@@ -52,7 +50,6 @@ const Login = () => {
                 localStorage.setItem('token', response.data)
                 if (response.data) {
                     setSignIn({
-                        ...signIn,
                         isLogin: true
                     })
                 }
@@ -77,7 +74,6 @@ const Login = () => {
         <div>
             {!obj && (
                 <div>
-                    <ToastContainer />
                     {!signIn.isLogin && (
                         <div className="container">
                             <div className="row">
@@ -91,13 +87,12 @@ const Login = () => {
                                                 <div>
                                                     <i className="fa fa-user-circle" aria-hidden="true"></i>
                                                     <input
-
-                                                        type="email"
+                                                        type="text"
                                                         onChange={changeHandler}
                                                         value={signIn.login.email}
                                                         name="email"
                                                         placeholder="Enter Email"
-                                                        required
+
                                                     />
                                                 </div>
                                             </div>
@@ -115,10 +110,6 @@ const Login = () => {
                                                     />
                                                 </div>
                                             </div>
-                                            {/* <div className="form-group text-center">
-                                            <input type="checkbox" className="form-check-input" id="exampleCheck1" />
-                                            <input type="checkbox" onChange={this.changeHandler} /> Remember me
-                                     </div> */}
                                             <div className="form-group text-center">
                                                 <button type="submit" className="btn btn-primary rounded-pill mr-4">Submit</button>
                                                 <button className="btn rounded-pill btn-primary" onClick={registerHandler}> Registration</button>

@@ -9,7 +9,7 @@ function Header() {
     const clickLogout = () => {
         localStorage.clear();
         history.push({
-            pathname: "/",
+            pathname: "/login",
         })
     }
     const homeHandler = () => {

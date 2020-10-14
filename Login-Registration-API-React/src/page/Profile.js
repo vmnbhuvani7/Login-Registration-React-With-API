@@ -7,13 +7,11 @@ import '../css/Form.css'
 import { Formik, Form } from 'formik'
 import * as Yup from 'yup'
 import FormikControl from '../common/FormikControl'
+import { Button } from 'react-bootstrap';
 
 const Profile = () => {
     const token = localStorage.getItem('token')
 
-    const [edit, setEdit] = useState({
-
-    })
     const [profile, setProfile] = useState({
         name: '',
         email: '',
@@ -89,14 +87,13 @@ const Profile = () => {
         gender: Yup.string().required('Required !'),
         hobby: Yup.array().required('Required !'),
         birthdate: Yup.date().required('Required !').nullable(),
-        zip: Yup.string().required('Required !'),
+        zip: Yup.string().matches(/^[0-9]{6}$/, 'Must be exactly 6 digits').required('Required !')
     })
 
     const editProfile = () => {
         setGetData({
             isEdit: true
         })
-
         axios.get(`${process.env.REACT_APP_API_URL_COUNTRY}`)
             .then((response) => {
                 setProfile({
@@ -160,14 +157,14 @@ const Profile = () => {
 
     const onSubmit = values => {
         let data = {
-            "address": values.address,
-            "gender": values.gender,
-            "birthdate": values.birthdate,
-            "hobby": values.hobby,
-            "zip": values.zip,
-            "country": profile.contry,
-            "state": profile.state,
-            "city": profile.city,
+            address: values.address,
+            gender: values.gender,
+            birthdate: values.birthdate,
+            hobby: values.hobby,
+            zip: values.zip,
+            country: profile.contry,
+            state: profile.state,
+            city: profile.city,
         }
 
         axios.post(`${process.env.REACT_APP_API_URL}/api/addUserInfo`, data,
@@ -206,19 +203,18 @@ const Profile = () => {
                     <div>
                         <img src={`${profile.image}`} className="rounded-circle" alt="not fount" />
                     </div>
-                    <button
+                    {/* <button
                         className="btn btn-success w-50 mt-5 ml-5 p-3"
                         onClick={editProfile}
-                    >EDIT MY PROFILE</button>
+                    >EDIT MY PROFILE</button> */}
+                    <Button variant="outline-success  w-50 mt-5 ml-5 p-3 " onClick={editProfile}>EDIT MY PROFILE</Button>
                 </div>
 
                 <div className="col-7">
                     <div className="block p-5">
                         <h2>Welcome back, {profile.name}!</h2>
                     </div>
-
                     {getData.isEdit && (
-
                         <div className="block mt-5 p-3">
                             <Formik
                                 initialValues={initialValues}
@@ -297,35 +293,35 @@ const Profile = () => {
                     {!getData.isEdit && (
                         <div className="block mt-5 p-3">
                             <div className="d-flex align-items-center justify-content-between m-3">
-                                <lable className="formStyle font-weight-bold my-2">Address:</lable>
+                                <p className="formStyle font-weight-bold my-2">Address:</p>
                                 <p className="font-weight-bold">{getData.address}</p>
                             </div>
                             <div className="d-flex align-items-center justify-content-between m-3">
-                                <lable className="formStyle font-weight-bold my-2 ">Gender:</lable>
+                                <p className="formStyle font-weight-bold my-2 ">Gender:</p>
                                 <p className="font-weight-bold">{getData.gender}</p>
                             </div>
                             <div className="d-flex align-items-center justify-content-between m-3">
-                                <lable className="formStyle font-weight-bold my-2">Birthdate:</lable>
+                                <p className="formStyle font-weight-bold my-2">Birthdate:</p>
                                 <p className="font-weight-bold">{getData.birthdate}</p>
                             </div>
                             <div className="d-flex align-items-center justify-content-between m-3">
-                                <lable className="formStyle font-weight-bold my-2">Hobby:</lable>
+                                <p className="formStyle font-weight-bold my-2">Hobby:</p>
                                 <p className="font-weight-bold">{getData.hobby}</p>
                             </div>
                             <div className="d-flex align-items-center justify-content-between m-3">
-                                <lable className="formStyle font-weight-bold my-2">Zip:</lable>
+                                <p className="formStyle font-weight-bold my-2">Zip:</p>
                                 <p className="font-weight-bold">{getData.zip}</p>
                             </div>
                             <div className="d-flex align-items-center justify-content-between m-3">
-                                <lable className="formStyle font-weight-bold my-2">Country:</lable>
+                                <p className="formStyle font-weight-bold my-2">Country:</p>
                                 <p className="font-weight-bold">{getData.country}</p>
                             </div>
                             <div className="d-flex align-items-center justify-content-between m-3">
-                                <lable className="formStyle font-weight-bold my-2">State:</lable>
+                                <p className="formStyle font-weight-bold my-2">State:</p>
                                 <p className="font-weight-bold">{getData.state}</p>
                             </div>
                             <div className="d-flex align-items-center justify-content-between m-3">
-                                <lable className="formStyle font-weight-bold my-2">City:</lable>
+                                <p className="formStyle font-weight-bold my-2">City:</p>
                                 <p className="font-weight-bold">{getData.city}</p>
                             </div>
                         </div>
