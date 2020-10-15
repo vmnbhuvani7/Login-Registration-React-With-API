@@ -43,28 +43,35 @@ h1 {
     left: 0px;
     right: 0px;
 }
+
 .block {
-  border: 2px solid black;
-  background-color: white;
+    border: 2px solid black;
+    background-color: white;
 }
 
 .bgcolore {
-    background-color:#f6faff;
+    background-color: #f6faff;
 }
 
-.btnright{
+.btnright {
     position: absolute;
     right: 40px;
 }
 
-.formStyle{
-    width:250px;
+.formStyle {
+    width: 250px;
 }
 
 .row {
     margin-right: 0px !important;
 }
 
-.height-img{
+.height-img {
     height: 125px;
+}
+
+.btn-color {
+    /* border-color: #28a745 !important; */
+    outline: none !important;
+    border: none !important;
 }

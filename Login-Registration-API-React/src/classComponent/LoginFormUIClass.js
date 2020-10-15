@@ -50,8 +50,8 @@ export class LoginForm extends Component {
                                     /> Remember me
                             </div>
                                 <div className="form-group text-center">
-                                    <button type="submit" className="btn btn-primary rounded-pill">Submit</button>
-                                    <button className="btn rounded-pill"><Link to="/registration"> Registration</Link></button>
+                                    <button type="submit" className="btn btn-primary rounded-pill btn-style">Submit</button>
+                                    <button className="btn rounded-pill btn-style"><Link to="/registration"> Registration</Link></button>
                                 </div>
                                 <div className="form-group text-center">
 

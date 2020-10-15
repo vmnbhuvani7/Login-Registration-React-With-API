@@ -167,8 +167,8 @@ const RegistrationFormik = () => {
 
                                     <div className="form-group text-center">
                                         <label className="form-label"></label>
-                                        <button type="submit" className="btn btn-primary rounded-pill mr-4">Save</button>
-                                        <button className="btn btn-primary rounded-pill" onClick={cancleHandler}>Cancle</button>
+                                        <button type="submit" className="btn btn-primary rounded-pill mr-4 btn-style">Save</button>
+                                        <button className="btn btn-primary rounded-pill btn-style" onClick={cancleHandler}>Cancle</button>
                                     </div>
                                 </form>
                             </div>

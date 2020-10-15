@@ -106,8 +106,8 @@ class RegistrationClass extends Component {
 
                                 <div className="form-group text-center">
                                     <label className="form-label"></label>
-                                    <button type="submit" className="btn  rounded-pill">Save</button>
-                                    <button className="btn  rounded-pill"><Link to="/">Cancle</Link></button>
+                                    <button type="submit" className="btn  rounded-pill btn-style">Save</button>
+                                    <button className="btn  rounded-pill btn-style"><Link to="/">Cancle</Link></button>
                                 </div>
                             </form>
                         </div>

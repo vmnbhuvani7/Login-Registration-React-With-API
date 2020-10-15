@@ -145,8 +145,8 @@ export class RegistrationForm extends Component {
 
                                 <div className="form-group text-center">
                                     <label className="form-label"></label>
-                                    <button type="submit" className="btn btn-primary rounded-pill">Save</button>
-                                    <button className="btn  rounded-pill"><Link to="/"> Cancle</Link></button>
+                                    <button type="submit" className="btn btn-primary rounded-pill btn-style">Save</button>
+                                    <button className="btn  rounded-pill btn-style"><Link to="/"> Cancle</Link></button>
                                 </div>
                             </form>
                             {this.state.isForm && this.state.firstName}

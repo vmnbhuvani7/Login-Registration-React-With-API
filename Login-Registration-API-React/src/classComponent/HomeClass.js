@@ -16,7 +16,7 @@ export class HomeClass extends Component {
                 {this.obj && (
                     <div>
                         <p>Home Page</p>
-                        <button className="btn " onClick={clickLogout}><Link to="/">Logout</Link></button>
+                        <button className="btn btn-style" onClick={clickLogout}><Link to="/">Logout</Link></button>
                     </div>
                 )}
                 {!this.obj && <Login />}

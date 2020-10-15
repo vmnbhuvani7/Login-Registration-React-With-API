@@ -111,8 +111,8 @@ const Login = () => {
                                                 </div>
                                             </div>
                                             <div className="form-group text-center">
-                                                <button type="submit" className="btn btn-primary rounded-pill mr-4">Submit</button>
-                                                <button className="btn rounded-pill btn-primary" onClick={registerHandler}> Registration</button>
+                                                <button type="submit" className="btn btn-primary rounded-pill mr-4 btn-style">Submit</button>
+                                                <button className="btn rounded-pill btn-primary btn-style" onClick={registerHandler}> Registration</button>
                                             </div>
                                             <div className="form-group text-center">
                                                 <a href="#">Forgot password? </a>

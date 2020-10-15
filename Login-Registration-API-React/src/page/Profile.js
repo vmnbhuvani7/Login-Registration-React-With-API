@@ -281,7 +281,7 @@ const Profile = () => {
                                                 name='zip'
                                             />
                                             <div className="d-flex justify-content-end">
-                                                <button type="submit" className="btn btn-success mr-5" onSubmit={() => onSubmit()}>Submit</button>
+                                                <button type="submit" className="btn btn-success mr-5 btn-style" onSubmit={() => onSubmit()}>Submit</button>
                                             </div>
                                         </Form>
                                     )

@@ -47,13 +47,13 @@ const LoginFormikYup = () => {
         email: Yup.string().email('Invalid email format')
             .required('Required !'),
         password: Yup.string().required('Required !')
-            // .min(8, 'at least 8 chars')
-            // .matches(/[a-z]/, 'at least one lowercase char')
-            // .matches(/[A-Z]/, 'at least one uppercase char')
-            // .matches(
-            //     /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/,
-            //     "One Number and one special case Character"
-            // ),
+         .min(8, 'at least 8 chars')
+         .matches(/[a-z]/, 'at least one lowercase char')
+         .matches(/[A-Z]/, 'at least one uppercase char')
+         .matches(
+             /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/,
+             "One Number and one special case Character"
+         ),
     })
     const registerHandler = () => {
         history.push({
@@ -102,12 +102,12 @@ const LoginFormikYup = () => {
                                             </div>
 
                                             <div className="form-group text-center">
-                                                <button type="submit" className="btn btn-primary rounded-pill mr-4">Submit</button>
-                                                <button className="btn rounded-pill btn-primary" onClick={registerHandler}> Registration</button>
+                                                <button type="submit" className="btn btn-primary rounded-pill mr-4 btn-style">Submit</button>
+                                                <button className="btn rounded-pill btn-primary btn-style" onClick={registerHandler}> Registration</button>
                                             </div>
-                                            <div className="form-group text-center">
+                                            {/* <div className="form-group text-center">
                                                 <a href="#">Forgot password? </a>
-                                            </div>
+                                            </div> */}
                                         </Form>
                                     </div>
                                 </div>

@@ -3,13 +3,10 @@ import { useHistory } from 'react-router-dom';
 import { ToastContainer, toast } from 'react-toastify';
 import axios from "axios";
 import { Formik, Form, Field, ErrorMessage } from 'formik';
-import { signup } from './index'
 import * as Yup from 'yup'
 
 import TextError from './TextError';
 import Home from '../page/Home';
-
-// import Loader from 'react-loader-spinner';
 
 const initialValues = {
     name: '',
@@ -24,39 +21,21 @@ const RegistrationFormikYup = () => {
 
     const [image, setImage] = useState()
 
-    // const [loading, setLoading] = useState({
-    //     load: false
-    // })
-
     const handleFileUpload = (event) => {
         setImage(event.target.files.item(0))
     }
     const onSubmit = (values) => {
-        // setLoading({
-        //     load: true,
-        // })
         const signUpForm = new FormData()
         signUpForm.append('file', image)
         signUpForm.append('name', values.name)
         signUpForm.append('email', values.email)
         signUpForm.append('password', values.password)
-
-        // signup(signUpForm).then(data => {
-        //     console.log(data);
-        //     debugger
-        // })
-
         axios.post(`${process.env.REACT_APP_API_URL}/api`, signUpForm, {
             headers: {
                 'Content-Type': 'application/json',
             }
         })
             .then((response) => {
-                // setInterval(() => {
-                //     setLoading({
-                //         load: false,
-                //     })
-                // }, 2000);
                 if (response && response.data === 'Email is Exist') {
                     toast.error(response.data, {
                         position: toast.POSITION.TOP_CENTER
@@ -76,14 +55,14 @@ const RegistrationFormikYup = () => {
         name: Yup.string().required('Required !'),
         email: Yup.string().email('Invalid email format')
             .required('Required !'),
-        password: Yup.string().required('Required !'),
-        // .min(8, 'at least 8 chars')
-        // .matches(/[a-z]/, 'at least one lowercase char')
-        // .matches(/[A-Z]/, 'at least one uppercase char')
-        // .matches(
-        //     /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/,
-        //     "One Number and one special case Character"
-        // ),
+        password: Yup.string().required('Required !')
+            .min(8, 'at least 8 chars')
+            .matches(/[a-z]/, 'at least one lowercase char')
+            .matches(/[A-Z]/, 'at least one uppercase char')
+            .matches(
+                /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/,
+                "One Number and one special case Character"
+            ),
         confirmPassword: Yup.string()
             .oneOf([Yup.ref('password'), null], 'Passwords must match').required('Required !'),
         // fileUpload: Yup.mixed().required('A file is required')
@@ -108,7 +87,6 @@ const RegistrationFormikYup = () => {
                         onSubmit={onSubmit}
                         validationSchema={validationSchema}
                     >
-
                         <div className="row">
                             <div className='col-md-3'></div>
                             <div className='col-md-6'>
@@ -165,29 +143,13 @@ const RegistrationFormikYup = () => {
                                                 type="file"
                                                 onChange={handleFileUpload}
                                             />
-                                            {/* {!image && */}
-                                            {/* < ErrorMessage name="fileUpload" component={TextError} /> */}
-                                            {/* } */}
                                             {image && <img src={(URL.createObjectURL(image))} className="mt-3 height-img" />}
                                         </div>
 
                                         <div className="form-group text-center">
                                             <label className="form-label"></label>
-                                            <button type="submit" className="btn btn-primary rounded-pill mr-4">Save</button>
-                                            <button className="btn btn-primary rounded-pill" onClick={cancelHandler}>Cancel</button>
-
-                                            {/* Loader code */}
-                                            {/* <div
-                                                style={{
-                                                    width: "100%",
-                                                    height: "100",
-                                                    display: "flex",
-                                                    justifyContent: "center",
-                                                    alignItems: "center"
-                                                }}
-                                            >
-                                                <Loader type="ThreeDots" color="#2BAD60" height="100" width="100" />
-                                            </div> */}
+                                            <button type="submit" className="btn btn-primary rounded-pill mr-4 btn-style">Save</button>
+                                            <button className="btn btn-primary rounded-pill btn-style" onClick={cancelHandler}>Cancel</button>
                                         </div>
                                     </Form>
                                 </div>
