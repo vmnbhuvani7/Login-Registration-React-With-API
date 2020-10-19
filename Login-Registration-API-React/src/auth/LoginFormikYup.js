@@ -33,6 +33,7 @@ const LoginFormikYup = () => {
                         isLogin: true
                     })
                 }
+                debugger
                 history.push({
                     pathname: "/home",
                 })
@@ -61,7 +62,7 @@ const LoginFormikYup = () => {
         })
     }
     const obj = localStorage.getItem('token')
-
+console.log(initialValues);
     return (
         <div>
             {!obj && (

@@ -30,7 +30,7 @@ const ProfileNew = () => {
         zip: '',
     })
     const [info, setInfo] = useState({
-        
+
         address: '',
         gender: '',
         birthdate: '',
@@ -40,6 +40,11 @@ const ProfileNew = () => {
         hobby: [],
         zip: '',
     })
+    const [getData, setGetData] = useState({
+        isEdit: false,
+        isInfo: true,
+    })
+    const [getData1, setGetData1] = useState(false)
 
 
 
@@ -82,17 +87,18 @@ const ProfileNew = () => {
                     city: response.data.city,
                     hobby: response.data.hobby,
                     zip: response.data.zip,
-                })
+                });
+
+                console.log(getData1);
             })
             .catch((error) => {
                 console.log(error);
             })
 
-    }, [profile.name, profile.email, profile.image, info]);
+    }
 
-    // const aaHandler = (e) => {
-    //     console.log(e.target.value);
-    // }
+        , [profile.name, profile.email, profile.image, info, getData1]);
+
     const changeHandler = (event) => {
         console.log(event.target.value);
         setData({
@@ -108,15 +114,10 @@ const ProfileNew = () => {
         })
     }
 
-    const [getData, setGetData] = useState({
-        isEdit: false,
-        isInfo: true,
-    })
-
     const editProfile = () => {
         setGetData({
             isEdit: true,
-            isInfo:false
+            isInfo: false
         })
         {
             info && info.address && (
@@ -144,12 +145,22 @@ const ProfileNew = () => {
             })
     }
 
+    // const validate = () => {
+    //     console.log("sa");
+    //     let addressError = "";
+    //     if (!data.address.includes("@")) {
+    //         addressError = "Name is required !"
+    //     }
+    //     if (addressError) {
+    //         setData({ addressError })
+    //         return false
+    //     }
+    //     return true
+    // }
+
     const submitHandler = (e) => {
         e.preventDefault();
-        setGetData({
-            isEdit: false,
-            isInfo: false,
-        })
+
         axios.post(`${process.env.REACT_APP_API_URL}/api/addUserInfo`, data,
             {
                 headers: {
@@ -159,12 +170,26 @@ const ProfileNew = () => {
             },
         )
             .then((response) => {
+                setGetData({
+                    isEdit: false,
+                    // isInfo: false,
+                }),
+                    setData({
+                        address: info.address,
+                        gender: info.gender,
+                        birthdate: info.birthdate,
+                        country: info.country,
+                        state: info.state,
+                        city: info.city,
+                        hobby: info.hobby,
+                        zip: info.zip,
+                    });
                 console.log(response);
             })
             .catch((error) => {
                 console.log(error);
             })
-
+        // }
     }
 
     useEffect(() => {
@@ -238,6 +263,9 @@ const ProfileNew = () => {
                                     <div className="col-10">
                                         <textarea className="form-control rounded-pill  w-100" name="address" value={data.address || ""} onChange={changeHandler} rows="3"></textarea>
                                     </div>
+                                    {/* {data.addressError && } */}
+                                    {/* {data.address ? <div style={{ fontSize: 12, color: "red" }}>{data.addressError}</div> : ""} */}
+
                                 </div>
 
                                 <div className="row align-items-center mt-3">
@@ -370,75 +398,74 @@ const ProfileNew = () => {
                         </div>
                     )}
 
-                    {getData.isInfo&& info.address &&(
-                    <div className="block mt-5 p-3">
-                        <div className="row align-items-center mt-3">
-                            <div className="col-2">
-                                <label className="form-label ">Address:</label>
+                    {info && info.address && (
+                        <div className="block mt-5 p-3">
+                            <div className="row align-items-center mt-3">
+                                <div className="col-2">
+                                    <label className="form-label ">Address:</label>
+                                </div>
+                                <div className="col-10">{info.address}
+                                </div>
                             </div>
-                            <div className="col-10">{info.address}
+                            <div className="row align-items-center mt-3">
+                                <div className="col-2">
+                                    <label className="form-label cf" >Gender:  </label>
+                                </div>
+                                <div className="col-10 " onChange={changeHandler}>
+                                    <div className="form-check-inline ml-2">
+                                        <label className="form-check-label ">{info.gender}
+                                        </label>
+                                    </div>
+                                </div>
                             </div>
-                        </div>
-                        <div className="row align-items-center mt-3">
-                            <div className="col-2">
-                                <label className="form-label cf" >Gender:  </label>
+                            <div className="row align-items-center mt-3">
+                                <div className="col-2">
+                                    <label className="form-label" >Date of birth: </label>
+                                </div>
+                                <div className="col-10">{info.birthdate}
+                                </div>
                             </div>
-                            <div className="col-10 " onChange={changeHandler}>
-                                <div className="form-check-inline ml-2">
-                                    <label className="form-check-label ">{info.gender}
-                                    </label>
+                            <div className="row align-items-center mt-3">
+                                <div className="col-2">
+                                    <label className="form-label">Country: </label>
+                                </div>
+                                <div className="col-10">{info.country}
+                                </div>
+                            </div>
+                            <div className="row align-items-center mt-3">
+                                <div className="col-2">
+                                    <label className="form-label">State: </label>
+                                </div>
+                                <div className="col-10">{info.state}
+                                </div>
+                            </div>
+                            <div className="row align-items-center mt-3">
+                                <div className="col-2">
+                                    <label className="form-label">City: </label>
+                                </div>
+                                <div className="col-10">{info.city}
+                                </div>
+                            </div>
+                            <div className="row align-items-center mt-3">
+                                <div className="col-2">
+                                    <label className="form-label cf" >Hobbies:  </label>
+                                </div>
+                                <div className="col-10">
+                                    <div className="form-check-inline">
+                                        <label className="form-check-label ml-2">{info.hobby}
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div className="row align-items-center mt-3">
+                                <div className="col-2">
+                                    <label className="form-label" value={data.zip || ''} >Pincode: </label>
+                                </div>
+                                <div className="col-10">{info.zip}
                                 </div>
                             </div>
                         </div>
-                        <div className="row align-items-center mt-3">
-                            <div className="col-2">
-                                <label className="form-label" >Date of birth: </label>
-                            </div>
-                            <div className="col-10">{info.birthdate}
-                            </div>
-                        </div>
-                        <div className="row align-items-center mt-3">
-                            <div className="col-2">
-                                <label className="form-label">Country: </label>
-                            </div>
-                            <div className="col-10">{info.country}
-                            </div>
-                        </div>
-                        <div className="row align-items-center mt-3">
-                            <div className="col-2">
-                                <label className="form-label">State: </label>
-                            </div>
-                            <div className="col-10">{info.state}
-                            </div>
-                        </div>
-                        <div className="row align-items-center mt-3">
-                            <div className="col-2">
-                                <label className="form-label">City: </label>
-                            </div>
-                            <div className="col-10">{info.city}
-                            </div>
-                        </div>
-                        <div className="row align-items-center mt-3">
-                            <div className="col-2">
-                                <label className="form-label cf" >Hobbies:  </label>
-                            </div>
-                            <div className="col-10">
-                                <div className="form-check-inline">
-                                    <label className="form-check-label ml-2">{info.hobby}
-                                    </label>
-                                </div>
-                            </div>
-                        </div>
-                        <div className="row align-items-center mt-3">
-                            <div className="col-2">
-                                <label className="form-label" value={data.zip || ''} >Pincode: </label>
-                            </div>
-                            <div className="col-10">{info.zip}
-                            </div>
-                        </div>
-                    </div>
                     )}
-                   
                 </div>
                 <div className="col-3"></div>
             </div>
