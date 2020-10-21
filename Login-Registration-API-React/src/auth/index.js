@@ -16,7 +16,6 @@ export const signup =  (signUpForm) => {
         }
     })
         .then((response) => {
-            debugger
 
         })
         .catch((error) => {

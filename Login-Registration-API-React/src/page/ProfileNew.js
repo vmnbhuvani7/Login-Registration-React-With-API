@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from 'react'
 
 import axios from 'axios'
+
 import Footer from '../common/Footer';
 import Header from '../common/Header';
 import '../css/Form.css'
-import Button from 'react-bootstrap/Button';
 
 const ProfileNew = () => {
     const token = localStorage.getItem('token')
@@ -14,6 +14,8 @@ const ProfileNew = () => {
         email: '',
         image: '',
     })
+    const [demo, setDemo] = useState(false);
+
     const [accommodation, setAccommodation] = useState({
         countryOptions: [],
         stateOptions: [],
@@ -29,24 +31,11 @@ const ProfileNew = () => {
         hobby: [],
         zip: '',
     })
-    const [info, setInfo] = useState({
 
-        address: '',
-        gender: '',
-        birthdate: '',
-        country: '',
-        state: '',
-        city: '',
-        hobby: [],
-        zip: '',
-    })
     const [getData, setGetData] = useState({
         isEdit: false,
         isInfo: true,
     })
-    const [getData1, setGetData1] = useState(false)
-
-
 
     useEffect(() => {
         axios.get(`${process.env.REACT_APP_API_URL}/test`,
@@ -77,8 +66,7 @@ const ProfileNew = () => {
             },
         )
             .then((response) => {
-
-                setInfo({
+                setData({
                     address: response.data.address,
                     gender: response.data.gender,
                     birthdate: response.data.birthdate,
@@ -88,109 +76,14 @@ const ProfileNew = () => {
                     hobby: response.data.hobby,
                     zip: response.data.zip,
                 });
+                setDemo(true);
 
-                console.log(getData1);
             })
             .catch((error) => {
                 console.log(error);
             })
 
-    }
-
-        , [profile.name, profile.email, profile.image, info, getData1]);
-
-    const changeHandler = (event) => {
-        console.log(event.target.value);
-        setData({
-            ...data,
-            [event.target.name]: event.target.value
-        })
-    }
-
-    const hobbyHandler = (event) => {
-        setData({
-            ...data,
-            hobby: [...data.hobby, event.target.value]
-        })
-    }
-
-    const editProfile = () => {
-        setGetData({
-            isEdit: true,
-            isInfo: false
-        })
-        {
-            info && info.address && (
-                setData({
-                    address: info.address,
-                    gender: info.gender,
-                    birthdate: info.birthdate,
-                    country: info.country,
-                    state: info.state,
-                    city: info.city,
-                    hobby: info.hobby,
-                    zip: info.zip,
-                })
-            )
-        }
-        axios.get(`${process.env.REACT_APP_API_URL_COUNTRY}`)
-            .then((response) => {
-                setAccommodation({
-                    ...accommodation,
-                    countryOptions: response && response.data
-                })
-            })
-            .catch((error) => {
-                console.log(error);
-            })
-    }
-
-    // const validate = () => {
-    //     console.log("sa");
-    //     let addressError = "";
-    //     if (!data.address.includes("@")) {
-    //         addressError = "Name is required !"
-    //     }
-    //     if (addressError) {
-    //         setData({ addressError })
-    //         return false
-    //     }
-    //     return true
-    // }
-
-    const submitHandler = (e) => {
-        e.preventDefault();
-
-        axios.post(`${process.env.REACT_APP_API_URL}/api/addUserInfo`, data,
-            {
-                headers: {
-                    'authentication-token': `${token}`,
-                    'Content-Type': 'application/json',
-                }
-            },
-        )
-            .then((response) => {
-                setGetData({
-                    isEdit: false,
-                    // isInfo: false,
-                }),
-                    setData({
-                        address: info.address,
-                        gender: info.gender,
-                        birthdate: info.birthdate,
-                        country: info.country,
-                        state: info.state,
-                        city: info.city,
-                        hobby: info.hobby,
-                        zip: info.zip,
-                    });
-                console.log(response);
-            })
-            .catch((error) => {
-                console.log(error);
-            })
-        // }
-    }
+    }, [profile.name, profile.email, profile.image, data]);
 
     useEffect(() => {
         {
@@ -231,6 +124,83 @@ const ProfileNew = () => {
         }
     }, [data.country, data.state])
 
+    const changeHandler = (event) => {
+        console.log(event.target.value);
+        setData({
+            ...data,
+            [event.target.name]: event.target.value
+        })
+    }
+
+    const hobbyHandler = (event) => {
+        setData({
+            ...data,
+            hobby: [...data.hobby, event.target.value]
+        })
+    }
+
+    const editProfile = () => {
+        setGetData({
+            isEdit: true,
+            isInfo: false
+        })
+        {
+            data && data.address && (
+                setData({
+                    address: data.address,
+                    gender: data.gender,
+                    birthdate: data.birthdate,
+                    country: data.country,
+                    state: data.state,
+                    city: data.city,
+                    hobby: data.hobby,
+                    zip: data.zip,
+                })
+            )
+        }
+        axios.get(`${process.env.REACT_APP_API_URL_COUNTRY}`)
+            .then((response) => {
+                setAccommodation({
+                    ...accommodation,
+                    countryOptions: response && response.data
+                })
+            })
+            .catch((error) => {
+                console.log(error);
+            })
+    }
+
+    const submitHandler = (e) => {
+        e.preventDefault();
+        axios.post(`${process.env.REACT_APP_API_URL}/api/addUserInfo`, data,
+            {
+                headers: {
+                    'authentication-token': `${token}`,
+                    'Content-Type': 'application/json',
+                }
+            },
+        )
+            .then((response) => {
+                setGetData({
+                    isEdit: false,
+                })
+                setData({
+                    address: data.address,
+                    gender: data.gender,
+                    birthdate: data.birthdate,
+                    country: data.country,
+                    state: data.state,
+                    city: data.city,
+                    hobby: data.hobby,
+                    zip: data.zip,
+                })
+                setDemo(true)
+            })
+            .catch((error) => {
+                console.log(error);
+            })
+    }
+
     return (
         <div>
             <Header />
@@ -240,9 +210,6 @@ const ProfileNew = () => {
                     <div>
                         <img src={`${profile.image}`} className="rounded-circle" alt="not fount" />
                     </div>
-                    {/*
-                    <Button variant="outline-success shadow-none  w-50 mt-5 ml-5 p-3 " onClick={editProfile}>EDIT MY PROFILE</Button>
-                    */}
                     <button
                         className="btn btn-success w-50 mt-5 ml-5 p-3"
                         onClick={editProfile}
@@ -263,11 +230,7 @@ const ProfileNew = () => {
                                     <div className="col-10">
                                         <textarea className="form-control rounded-pill  w-100" name="address" value={data.address || ""} onChange={changeHandler} rows="3"></textarea>
                                     </div>
-                                    {/* {data.addressError && } */}
-                                    {/* {data.address ? <div style={{ fontSize: 12, color: "red" }}>{data.addressError}</div> : ""} */}
-
                                 </div>
-
                                 <div className="row align-items-center mt-3">
                                     <div className="col-2">
                                         <label className="form-label cf" >Gender:  </label>
@@ -275,22 +238,21 @@ const ProfileNew = () => {
                                     <div className="col-10 " onChange={changeHandler} >
                                         <div className="form-check-inline ml-2">
                                             <label className="form-check-label ">
-                                                <input type="radio" className="form-check-input" value="male" checked={data.gender === "male"} name="gender" />Male
+                                                <input type="radio" className="form-check-input" value="male" name="gender" />Male
                                     </label>
                                         </div>
                                         <div className="form-check-inline ml-2">
                                             <label className="form-check-label">
-                                                <input type="radio" className="form-check-input" value="female" checked={data.gender === "female"} name="gender" />Female
+                                                <input type="radio" className="form-check-input" value="female" name="gender" />Female
                                     </label>
                                         </div>
                                         <div className="form-check-inline ml-2 ">
                                             <label className="form-check-label">
-                                                <input type="radio" className="form-check-input" value="other" checked={data.gender === "other"} name="gender" />Other
+                                                <input type="radio" className="form-check-input" value="other" name="gender" />Other
                                     </label>
                                         </div>
                                     </div>
                                 </div>
-
                                 <div className="row align-items-center mt-3">
                                     <div className="col-2">
                                         <label className="form-label" >Date of birth: </label>
@@ -356,7 +318,6 @@ const ProfileNew = () => {
                                         </select>
                                     </div>
                                 </div>
-
                                 <div className="row align-items-center mt-3">
                                     <div className="col-2">
                                         <label className="form-label cf" >Hobbies:  </label>
@@ -398,13 +359,13 @@ const ProfileNew = () => {
                         </div>
                     )}
 
-                    {info && info.address && (
+                    {demo && data.address && (
                         <div className="block mt-5 p-3">
                             <div className="row align-items-center mt-3">
                                 <div className="col-2">
                                     <label className="form-label ">Address:</label>
                                 </div>
-                                <div className="col-10">{info.address}
+                                <div className="col-10">{data.address}
                                 </div>
                             </div>
                             <div className="row align-items-center mt-3">
@@ -413,7 +374,7 @@ const ProfileNew = () => {
                                 </div>
                                 <div className="col-10 " onChange={changeHandler}>
                                     <div className="form-check-inline ml-2">
-                                        <label className="form-check-label ">{info.gender}
+                                        <label className="form-check-label ">{data.gender}
                                         </label>
                                     </div>
                                 </div>
@@ -422,28 +383,28 @@ const ProfileNew = () => {
                                 <div className="col-2">
                                     <label className="form-label" >Date of birth: </label>
                                 </div>
-                                <div className="col-10">{info.birthdate}
+                                <div className="col-10">{data.birthdate}
                                 </div>
                             </div>
                             <div className="row align-items-center mt-3">
                                 <div className="col-2">
                                     <label className="form-label">Country: </label>
                                 </div>
-                                <div className="col-10">{info.country}
+                                <div className="col-10">{data.country}
                                 </div>
                             </div>
                             <div className="row align-items-center mt-3">
                                 <div className="col-2">
                                     <label className="form-label">State: </label>
                                 </div>
-                                <div className="col-10">{info.state}
+                                <div className="col-10">{data.state}
                                 </div>
                             </div>
                             <div className="row align-items-center mt-3">
                                 <div className="col-2">
                                     <label className="form-label">City: </label>
                                 </div>
-                                <div className="col-10">{info.city}
+                                <div className="col-10">{data.city}
                                 </div>
                             </div>
                             <div className="row align-items-center mt-3">
@@ -452,16 +413,16 @@ const ProfileNew = () => {
                                 </div>
                                 <div className="col-10">
                                     <div className="form-check-inline">
-                                        <label className="form-check-label ml-2">{info.hobby}
+                                        <label className="form-check-label ml-2">{data.hobby}
                                         </label>
                                     </div>
                                 </div>
                             </div>
                             <div className="row align-items-center mt-3">
                                 <div className="col-2">
-                                    <label className="form-label" value={data.zip || ''} >Pincode: </label>
+                                    <label className="form-label" >Pincode: </label>
                                 </div>
-                                <div className="col-10">{info.zip}
+                                <div className="col-10">{data.zip}
                                 </div>
                             </div>
                         </div>

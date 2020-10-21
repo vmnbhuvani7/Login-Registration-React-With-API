@@ -13,7 +13,6 @@ const initialValues = {
     email: '',
     password: '',
     confirmPassword: '',
-    // fileUpload: '',
 }
 
 const RegistrationFormikYup = () => {
@@ -65,7 +64,6 @@ const RegistrationFormikYup = () => {
             ),
         confirmPassword: Yup.string()
             .oneOf([Yup.ref('password'), null], 'Passwords must match').required('Required !'),
-        // fileUpload: Yup.mixed().required('A file is required')
     })
 
     const cancelHandler = () => {

@@ -203,10 +203,6 @@ const Profile = () => {
                     <div>
                         <img src={`${profile.image}`} className="rounded-circle" alt="not fount" />
                     </div>
-                    {/* <button
-                        className="btn btn-success w-50 mt-5 ml-5 p-3"
-                        onClick={editProfile}
-                    >EDIT MY PROFILE</button> */}
                     <Button variant="outline-success  w-50 mt-5 ml-5 p-3 " onClick={editProfile}>EDIT MY PROFILE</Button>
                 </div>
 

@@ -27,4 +27,4 @@ app.use(function (req, res, next) {
 app.use('/api', authRoute);
 app.use('/test', getReq);
 
-app.listen(3000, ()=> console.log('server running at 3000'));
+app.listen(7000, ()=> console.log('server running at 7000'));

@@ -33,7 +33,6 @@ const LoginFormikYup = () => {
                         isLogin: true
                     })
                 }
-                debugger
                 history.push({
                     pathname: "/home",
                 })

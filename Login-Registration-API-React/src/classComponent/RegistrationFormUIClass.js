@@ -5,18 +5,6 @@ import '../css/Form.css'
 
 export class RegistrationForm extends Component {
     state = {
-        // data: {
-        // firstName: '',
-        // lastName: '',
-        // dateOfBirth: '',
-        // num: '',
-        // email: '',
-        // password: '',
-        // optradio: '',
-        // optchack: '',
-        // address: '',
-        // city: '',
-        // },
         isForm: false,
         formData: []
     }

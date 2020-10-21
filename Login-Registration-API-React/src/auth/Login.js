@@ -31,11 +31,6 @@ const Login = () => {
         //     'email': signIn.login.email,
         //     'password': signIn.login.password,
         // };
-        // const { email, password } = signIn.login
-        // const user = {
-        //     email,
-        //     password,
-        // };
 
         // signin(user).then(data => {
         //     console.log("data of login", data);
